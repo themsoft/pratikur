@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratikur - Doviz Kurlari</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,12 +15,20 @@
             <option value="TRY" selected>TRY - Turk Lirasi</option>
         </select>
 
+        <div class="kontrol-paneli">
+            <div class="direction-toggle">
+                <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')">Ana -> Yabanci</button>
+                <button class="direction-btn" id="btnTers" onclick="setDirection('ters')">Yabanci -> Ana</button>
+            </div>
+            <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> Excel Indir</button>
+        </div>
+
         <div class="table-container">
             <table id="kurTablosu">
                 <thead>
                     <tr>
                         <th>Para Birimi</th>
-                        <th>Deger</th>
+                        <th id="tabloBaslikDeger">Deger</th>
                     </tr>
                 </thead>
                 <tbody id="kurListesiBody">

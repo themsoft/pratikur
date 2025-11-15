@@ -34,6 +34,78 @@ select {
     box-sizing: border-box;
 }
 
+/* === Kontrol Paneli === */
+.kontrol-paneli {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #e9ecef;
+}
+
+.direction-toggle {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 12px;
+    background: #fff;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.direction-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: 0.2s;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.direction-btn:hover {
+    background: #f1f1f1;
+}
+
+.direction-btn.active {
+    background: #d0ebff;
+    color: #1971c2;
+    font-weight: bold;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.btn-csv {
+    background-color: #8e44ad;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0;
+}
+
+.btn-csv:hover {
+    background-color: #732d91;
+    transform: translateY(-1px);
+}
+
 .table-container {
     max-height: 350px;
     overflow-y: auto;
