@@ -9,32 +9,68 @@
 </head>
 <body>
     <div class="container">
-        <h2>Guncel Doviz Kurlari</h2>
-        <label style="font-weight:bold; font-size:0.9em; color:#555;">Para Birimi:</label>
-        <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
-            <option value="TRY" selected>TRY - Turk Lirasi</option>
-        </select>
-
-        <div class="kontrol-paneli">
-            <div class="direction-toggle">
-                <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')">Ana -> Yabanci</button>
-                <button class="direction-btn" id="btnTers" onclick="setDirection('ters')">Yabanci -> Ana</button>
-            </div>
-            <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> Excel Indir</button>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="tabDegistir('tab1', this)"><i class="fas fa-list"></i> Liste</button>
+            <button class="tab-btn" onclick="tabDegistir('tab2', this)"><i class="fas fa-calculator"></i> Cevirici</button>
         </div>
 
-        <div class="table-container">
-            <table id="kurTablosu">
-                <thead>
-                    <tr>
-                        <th>Para Birimi</th>
-                        <th id="tabloBaslikDeger">Deger</th>
-                    </tr>
-                </thead>
-                <tbody id="kurListesiBody">
-                    <tr><td colspan="2" align="center">Yukleniyor...</td></tr>
-                </tbody>
-            </table>
+        <!-- Tab 1: Kur Listesi -->
+        <div id="tab1" class="content active">
+            <label style="font-weight:bold; font-size:0.9em; color:#555;">Para Birimi:</label>
+            <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
+                <option value="TRY" selected>TRY - Turk Lirasi</option>
+            </select>
+
+            <div class="kontrol-paneli">
+                <div class="direction-toggle">
+                    <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')">Ana -> Yabanci</button>
+                    <button class="direction-btn" id="btnTers" onclick="setDirection('ters')">Yabanci -> Ana</button>
+                </div>
+                <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> Excel Indir</button>
+            </div>
+
+            <div class="table-container">
+                <table id="kurTablosu">
+                    <thead>
+                        <tr>
+                            <th>Para Birimi</th>
+                            <th id="tabloBaslikDeger">Deger</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kurListesiBody">
+                        <tr><td colspan="2" align="center">Yukleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 2: Cevirici -->
+        <div id="tab2" class="content">
+            <h2>Hizli Cevirici</h2>
+            <label>Miktar:</label>
+            <input type="number" id="calcAmount" placeholder="100" value="100">
+
+            <div class="swap-container">
+                <div style="flex:1">
+                    <label>Buradan:</label>
+                    <select id="calcFrom"><option value="USD">USD</option></select>
+                </div>
+                <button class="swap-btn" onclick="swapCurrencies()"><i class="fas fa-exchange-alt"></i></button>
+                <div style="flex:1">
+                    <label>Buraya:</label>
+                    <select id="calcTo"><option value="TRY" selected>TRY</option></select>
+                </div>
+            </div>
+
+            <button class="btn btn-green" onclick="ozelHesapla()">HESAPLA</button>
+            <div class="sonuc-kutusu" id="calcResult">Hesaplamak icin butona basin</div>
+
+            <div class="history-section">
+                <span class="history-title">Son Hesaplamalar</span>
+                <ul id="historyList" class="history-list"></ul>
+            </div>
+            <div class="disclaimer-small">Veriler Avrupa Merkez Bankasi kaynaklidir.</div>
         </div>
     </div>
 
