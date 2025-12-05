@@ -3,6 +3,9 @@
 let tumParaBirimleri = {};
 let sonGelenVeri = null;
 let currentDirection = 'duz';
+let binanceSocket = null;
+let usdTry = 0;
+let eurUsd = 0;
 
 async function paraBirimleriniGetir() {
     const response = await fetch('https://api.frankfurter.dev/v1/currencies');
@@ -62,6 +65,63 @@ function tabloyuGuncelle() {
         });
 }
 
+// =============================================
+// WebSocket (Binance - Canli Piyasa)
+// =============================================
+
+function baslatWebSocket() {
+    const streams = 'usdttry@miniTicker/eurusdt@miniTicker';
+    const socketUrl = `wss://stream.binance.com:9443/stream?streams=${streams}`;
+
+    try {
+        binanceSocket = new WebSocket(socketUrl);
+
+        binanceSocket.onopen = function () {
+            console.log('Canli baglanti saglandi.');
+        };
+
+        binanceSocket.onmessage = function (event) {
+            const mesaj = JSON.parse(event.data);
+            const veri = mesaj.data;
+
+            if (veri.s === 'USDTTRY') {
+                usdTry = parseFloat(veri.c);
+                updatePriceUI('liveUsd', usdTry);
+                if (eurUsd > 0) updatePriceUI('liveEur', eurUsd * usdTry);
+            } else if (veri.s === 'EURUSDT') {
+                eurUsd = parseFloat(veri.c);
+                if (usdTry > 0) updatePriceUI('liveEur', eurUsd * usdTry);
+            }
+        };
+
+        binanceSocket.onerror = function (error) {
+            console.error('WebSocket baglanti hatasi:', error);
+        };
+
+        binanceSocket.onclose = function () {
+            setTimeout(baslatWebSocket, 5000);
+        };
+    } catch (e) {
+        console.error('Socket baslatilamadi:', e);
+    }
+}
+
+function updatePriceUI(id, price) {
+    const el = document.getElementById(id);
+    const oldPrice = parseFloat(el.innerText.replace('\u20ba', ''));
+
+    el.innerText = price.toFixed(2) + ' \u20ba';
+
+    if (!isNaN(oldPrice)) {
+        if (price > oldPrice) {
+            el.style.color = '#2ecc71';
+        } else if (price < oldPrice) {
+            el.style.color = '#e74c3c';
+        } else {
+            el.style.color = 'white';
+        }
+    }
+}
 function tabDegistir(id, btn) {
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -128,6 +188,7 @@ function excelIndir() {
 }
 
 window.onload = async function () {
+    baslatWebSocket();
     await paraBirimleriniGetir();
     tabloyuGuncelle();
 };

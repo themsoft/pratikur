@@ -135,6 +135,70 @@ td {
     border-bottom: 1px solid #f1f1f1;
     font-size: 0.95em;
 }
+/* === Canli Piyasa === */
+.live-market-container {
+    background: #2c3e50;
+    padding: 15px;
+    border-bottom: 4px solid #34495e;
+    position: relative;
+}
+
+.live-market-header {
+    color: #f1c40f;
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.live-market {
+    display: flex;
+    gap: 10px;
+    color: white;
+    justify-content: space-around;
+}
+
+.market-item {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.market-item h4 {
+    margin: 0;
+    font-size: 0.8em;
+    color: #bdc3c7;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.market-item .price {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+    transition: color 0.3s;
+}
+
+.live-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
 /* === Tabs === */
 .tabs {
     display: flex;
