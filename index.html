@@ -29,10 +29,12 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="tabDegistir('tab1', this)"><i class="fas fa-list"></i> Liste</button>
             <button class="tab-btn" onclick="tabDegistir('tab2', this)"><i class="fas fa-calculator"></i> Cevirici</button>
+            <button class="tab-btn" onclick="tabDegistir('tab3', this)"><i class="fas fa-history"></i> Kur Arsivi</button>
         </div>
 
         <!-- Tab 1: Kur Listesi -->
         <div id="tab1" class="content active">
+            <div id="zamanGosterge" class="zaman-bilgisi"></div>
             <label style="font-weight:bold; font-size:0.9em; color:#555;">Para Birimi:</label>
             <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
                 <option value="TRY" selected>TRY - Turk Lirasi</option>
@@ -87,6 +89,54 @@
                 <ul id="historyList" class="history-list"></ul>
             </div>
             <div class="disclaimer-small">Veriler Avrupa Merkez Bankasi kaynaklidir.</div>
+        </div>
+
+        <!-- Tab 3: Kur Arsivi -->
+        <div id="tab3" class="content">
+            <h2>Gecmis Kurlar</h2>
+
+            <div class="history-controls">
+                <div class="date-group">
+                    <div>
+                        <label>Baslangic:</label>
+                        <input type="date" id="histStartDate">
+                    </div>
+                    <div>
+                        <label>Bitis:</label>
+                        <input type="date" id="histEndDate">
+                    </div>
+                </div>
+
+                <div class="swap-container" style="margin-bottom: 15px;">
+                    <div style="flex:1">
+                        <label>Ana Para:</label>
+                        <select id="histBase"><option value="USD">USD</option></select>
+                    </div>
+                    <div style="flex:1; margin-left:10px;">
+                        <label>Hedef Para:</label>
+                        <select id="histTarget"><option value="TRY" selected>TRY</option></select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-green" style="margin-top:0;" onclick="gecmisKurlariGetir()">KURLARI GETIR</button>
+                    <button class="btn btn-csv" style="margin-top:0;" onclick="gecmisExcelIndir()"><i class="fas fa-file-csv"></i> Excel Indir</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Kur Degeri</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr><td colspan="2" align="center">Tarih araligi secip butona basin.</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

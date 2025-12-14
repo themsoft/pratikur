@@ -2,6 +2,7 @@
 
 let tumParaBirimleri = {};
 let sonGelenVeri = null;
+let sonGecmisVeri = null;
 let currentDirection = 'duz';
 let binanceSocket = null;
 let usdTry = 0;
@@ -11,7 +12,7 @@ async function paraBirimleriniGetir() {
     const response = await fetch('https://api.frankfurter.dev/v1/currencies');
     tumParaBirimleri = await response.json();
 
-    const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo'];
+    const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo', 'histBase', 'histTarget'];
     selectIds.forEach(id => {
         const el = document.getElementById(id);
         el.innerHTML = '';
@@ -23,6 +24,8 @@ async function paraBirimleriniGetir() {
     document.getElementById('baseCurrencySelect').value = 'TRY';
     document.getElementById('calcFrom').value = 'USD';
     document.getElementById('calcTo').value = 'TRY';
+    document.getElementById('histBase').value = 'USD';
+    document.getElementById('histTarget').value = 'TRY';
 }
 
 function setDirection(dir) {
@@ -172,6 +175,72 @@ function updateHistory(text) {
     }
 }
 
+// =============================================
+// Tab 3 - Kur Arsivi
+// =============================================
+
+function gecmisKurlariGetir() {
+    const start = document.getElementById('histStartDate').value;
+    const end = document.getElementById('histEndDate').value;
+    const base = document.getElementById('histBase').value;
+    const target = document.getElementById('histTarget').value;
+    const tbody = document.getElementById('historyBody');
+
+    if (!start || !end) { alert('Lutfen tarih araligi secin.'); return; }
+    if (start > end) { alert('Baslangic tarihi bitis tarihinden buyuk olamaz.'); return; }
+    if (base === target) { alert('Para birimleri farkli olmali.'); return; }
+
+    tbody.innerHTML = '<tr><td colspan="2" align="center"><i class="fas fa-spinner fa-spin"></i> Yukleniyor...</td></tr>';
+
+    fetch(`https://api.frankfurter.dev/v1/${start}..${end}?from=${base}&to=${target}`)
+        .then(res => res.json())
+        .then(data => {
+            sonGecmisVeri = data;
+            tbody.innerHTML = '';
+
+            if (!data.rates || Object.keys(data.rates).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" align="center">Bu tarih araligi icin veri bulunamadi.</td></tr>';
+                return;
+            }
+
+            const dates = Object.keys(data.rates).sort().reverse();
+            dates.forEach(date => {
+                const rate = data.rates[date][target];
+                const formattedDate = new Date(date).toLocaleDateString('tr-TR');
+                tbody.innerHTML += `<tr><td>${formattedDate}</td><td>1 ${base} = <b>${rate.toFixed(4)}</b> ${target}</td></tr>`;
+            });
+        });
+}
+
+function gecmisExcelIndir() {
+    if (!sonGecmisVeri || !sonGecmisVeri.rates) {
+        alert('Once kur verilerini getirmelisiniz.');
+        return;
+    }
+
+    const dates = Object.keys(sonGecmisVeri.rates).sort().reverse();
+    if (dates.length === 0) {
+        alert('Indirilecek veri yok.');
+        return;
+    }
+
+    const base = sonGecmisVeri.base || document.getElementById('histBase').value;
+    const target = Object.keys(sonGecmisVeri.rates[dates[0]])[0];
+
+    let csv = `data:text/csv;charset=utf-8,\uFEFF Tarih;1 ${base} Karsiligi (${target})\n`;
+    dates.forEach(date => {
+        const rate = sonGecmisVeri.rates[date][target];
+        if (rate !== undefined) {
+            const formattedDate = new Date(date).toLocaleDateString('tr-TR');
+            csv += `${formattedDate};${String(rate.toFixed(4)).replace('.', ',')}\n`;
+        }
+    });
+
+    const link = document.createElement('a');
+    link.href = encodeURI(csv);
+    link.download = `kur_arsivi_${base}_${target}.csv`;
+    link.click();
+}
 function excelIndir() {
     if (!sonGelenVeri) return;
 

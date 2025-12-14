@@ -355,3 +355,50 @@ input[type="number"] {
     color: #aaa;
     font-style: italic;
 }
+
+/* === Kur Arsivi === */
+.history-controls {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 20px;
+}
+
+.date-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.date-group div {
+    flex: 1;
+}
+
+.date-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.zaman-bilgisi {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.85em;
+    color: #856404;
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    font-weight: 500;
+}
