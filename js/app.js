@@ -26,6 +26,13 @@ async function paraBirimleriniGetir() {
     document.getElementById('calcTo').value = 'TRY';
     document.getElementById('histBase').value = 'USD';
     document.getElementById('histTarget').value = 'TRY';
+
+    // Varsayilan tarih araligi (son 7 gun)
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+    document.getElementById('histEndDate').valueAsDate = today;
+    document.getElementById('histStartDate').valueAsDate = lastWeek;
 }
 
 function setDirection(dir) {
