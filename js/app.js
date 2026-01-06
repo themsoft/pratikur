@@ -4,6 +4,7 @@ let tumParaBirimleri = {};
 let sonGelenVeri = null;
 let sonGecmisVeri = null;
 let currentDirection = 'duz';
+let deferredPrompt;
 let binanceSocket = null;
 let usdTry = 0;
 let eurUsd = 0;
@@ -75,6 +76,33 @@ function tabloyuGuncelle() {
         });
 }
 
+// =============================================
+// PWA
+// =============================================
+
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
+    navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('SW kayitli'))
+        .catch(err => console.log('SW hatasi:', err));
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').style.display = 'block';
+});
+
+function uygulamayiYukle() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((result) => {
+            if (result.outcome === 'accepted') {
+                document.getElementById('installBtn').style.display = 'none';
+            }
+            deferredPrompt = null;
+        });
+    }
+}
 // =============================================
 // WebSocket (Binance - Canli Piyasa)
 // =============================================

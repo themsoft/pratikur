@@ -356,6 +356,18 @@ input[type="number"] {
     font-style: italic;
 }
 
+#installBtn {
+    display: none;
+    background: #333;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
 /* === Kur Arsivi === */
 .history-controls {
     background: #f8f9fa;
