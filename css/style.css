@@ -1,11 +1,15 @@
-/* Pratikur - Doviz Kuru */
+/* ============================================
+   Pratikur - Döviz Kuru Takip Uygulaması
+   ============================================ */
 
+/* === Reset & Base === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f0f2f5;
     margin: 0;
     padding: 20px;
     color: #333;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .container {
@@ -15,127 +19,10 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
-    padding: 20px;
+    position: relative;
 }
 
-h2 {
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 0;
-}
-
-select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
-    box-sizing: border-box;
-}
-
-/* === Kontrol Paneli === */
-.kontrol-paneli {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-    border: 1px solid #e9ecef;
-}
-
-.direction-toggle {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 12px;
-    background: #fff;
-    padding: 4px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.direction-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: 0.2s;
-    color: #666;
-    font-size: 0.9em;
-}
-
-.direction-btn:hover {
-    background: #f1f1f1;
-}
-
-.direction-btn.active {
-    background: #d0ebff;
-    color: #1971c2;
-    font-weight: bold;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-    margin-top: 10px;
-}
-
-.btn-csv {
-    background-color: #8e44ad;
-    color: white;
-    width: 100%;
-    padding: 12px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 0;
-}
-
-.btn-csv:hover {
-    background-color: #732d91;
-    transform: translateY(-1px);
-}
-
-.table-container {
-    max-height: 350px;
-    overflow-y: auto;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    margin-top: 15px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: #f1f1f1;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    font-size: 0.9em;
-    color: #555;
-    text-align: left;
-    padding: 10px;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #f1f1f1;
-    font-size: 0.95em;
-}
-/* === Canli Piyasa === */
+/* === Canlı Piyasa === */
 .live-market-container {
     background: #2c3e50;
     padding: 15px;
@@ -246,7 +133,15 @@ td {
     to   { opacity: 1; transform: translateY(0); }
 }
 
+h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
 /* === Form Elements === */
+select,
 input[type="number"] {
     width: 100%;
     padding: 12px;
@@ -257,12 +152,166 @@ input[type="number"] {
     box-sizing: border-box;
 }
 
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+/* === Kontrol Paneli === */
+.kontrol-paneli {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #e9ecef;
+}
+
+.direction-toggle {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 12px;
+    background: #fff;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.direction-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: 0.2s;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.direction-btn:hover {
+    background: #f1f1f1;
+}
+
+.direction-btn.active {
+    background: #d0ebff;
+    color: #1971c2;
+    font-weight: bold;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* === Buttons === */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
 .btn-green {
     background-color: #28a745;
     color: white;
 }
 
-/* === Cevirici (Swap & History) === */
+.btn-csv {
+    background-color: #8e44ad;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0;
+}
+
+.btn-csv:hover {
+    background-color: #732d91;
+    transform: translateY(-1px);
+}
+
+#installBtn {
+    display: none;
+    background: #333;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+/* === Table === */
+.table-container {
+    max-height: 350px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f1f1f1;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    font-size: 0.9em;
+    color: #555;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 0.95em;
+}
+
+/* === Sonuç & Bilgi Kutuları === */
+.sonuc-kutusu {
+    background: #eefcf1;
+    border: 1px dashed #28a745;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.1em;
+    font-weight: 500;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zaman-bilgisi {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.85em;
+    color: #856404;
+    background: #fff3cd;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ffeeba;
+    font-weight: 500;
+}
+
+/* === Çevirici (Swap & History) === */
 .swap-container {
     display: flex;
     align-items: flex-end;
@@ -288,22 +337,6 @@ input[type="number"] {
 .swap-btn:hover {
     background: #f0f7ff;
     transform: rotate(180deg);
-}
-
-.sonuc-kutusu {
-    background: #eefcf1;
-    border: 1px dashed #28a745;
-    color: #155724;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 20px;
-    font-size: 1.1em;
-    font-weight: 500;
-    min-height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .history-section {
@@ -356,19 +389,7 @@ input[type="number"] {
     font-style: italic;
 }
 
-#installBtn {
-    display: none;
-    background: #333;
-    color: white;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-}
-
-/* === Kur Arsivi === */
+/* === Kur Arşivi === */
 .history-controls {
     background: #f8f9fa;
     padding: 15px;
@@ -394,23 +415,16 @@ input[type="number"] {
     color: #666;
 }
 
-input[type="date"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-family: inherit;
-    box-sizing: border-box;
+/* === Footer === */
+.footer-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8em;
+    color: #999;
+    padding-bottom: 15px;
 }
 
-.zaman-bilgisi {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 0.85em;
-    color: #856404;
-    background: #fff3cd;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ffeeba;
-    font-weight: 500;
+.footer-links a {
+    color: #999;
+    text-decoration: none;
 }
