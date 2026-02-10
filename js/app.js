@@ -132,7 +132,7 @@ async function paraBirimleriniGetir() {
         document.getElementById('histEndDate').valueAsDate = today;
         document.getElementById('histStartDate').valueAsDate = lastWeek;
     } catch (e) {
-        console.error(e);
+        console.error('Para birimleri alinamadi:', e);
     }
 }
 
@@ -220,6 +220,15 @@ function tabloyuGuncelle() {
         })
         .catch(err => {
             console.error('Kur listesi alinamadi:', err);
+            tbody.textContent = '';
+            const errRow = document.createElement('tr');
+            const errCell = document.createElement('td');
+            errCell.colSpan = 2;
+            errCell.align = 'center';
+            errCell.style.color = 'red';
+            errCell.textContent = 'Veriler y\u00fcklenemedi.';
+            errRow.appendChild(errCell);
+            tbody.appendChild(errRow);
         });
 }
 
@@ -268,6 +277,7 @@ function ozelHesapla() {
         })
         .catch(err => {
             console.error('Hesaplama hatasi:', err);
+            resBox.textContent = 'Hesaplama yapilamadi.';
         });
 }
 
@@ -367,6 +377,15 @@ function gecmisKurlariGetir() {
         })
         .catch(err => {
             console.error('Gecmis kur hatasi:', err);
+            tbody.textContent = '';
+            const errRow = document.createElement('tr');
+            const errCell = document.createElement('td');
+            errCell.colSpan = 2;
+            errCell.align = 'center';
+            errCell.style.color = 'red';
+            errCell.textContent = `Hata: ${err.message}`;
+            errRow.appendChild(errCell);
+            tbody.appendChild(errRow);
         });
 }
 
