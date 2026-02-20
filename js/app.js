@@ -112,10 +112,21 @@ function setKaynak(kaynak) {
 
     // Tablo basligini guncelle
     const thead = document.querySelector('#kurTablosu thead tr');
+    thead.textContent = '';
     if (kaynak === 'tcmb') {
-        thead.innerHTML = '<th>Para Birimi</th><th>Al\u0131\u015f</th><th>Sat\u0131\u015f</th>';
+        ['Para Birimi', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
     } else {
-        thead.innerHTML = '<th>Para Birimi</th><th id="tabloBaslikDeger">De\u011fer</th>';
+        const th1 = document.createElement('th');
+        th1.textContent = 'Para Birimi';
+        const th2 = document.createElement('th');
+        th2.id = 'tabloBaslikDeger';
+        th2.textContent = 'De\u011fer';
+        thead.appendChild(th1);
+        thead.appendChild(th2);
     }
 
     // Guncel kur ve tablo guncelle
@@ -405,7 +416,28 @@ function excelIndir() {
 }
 
 function gecmisExcelIndir() {
-    if (!sonGecmisVeri || !sonGecmisVeri.rates) {
+    if (!sonGecmisVeri) {
+        alert('\u00d6nce kur verilerini getirmelisiniz.');
+        return;
+    }
+
+    // TCMB gecmis verisi
+    if (sonGecmisVeri.tcmb) {
+        if (!sonGecmisVeri.results || sonGecmisVeri.results.length === 0) {
+            alert('\u0130ndirilecek veri yok.');
+            return;
+        }
+        let csv = `data:text/csv;charset=utf-8,\uFEFFTarih;Alis;Satis\n`;
+        sonGecmisVeri.results.forEach(item => {
+            const formattedDate = new Date(item.date).toLocaleDateString('tr-TR');
+            csv += `${formattedDate};${String(item.buying.toFixed(4)).replace('.', ',')};${String(item.selling.toFixed(4)).replace('.', ',')}\n`;
+        });
+        csvIndir(`kur_arsivi_TCMB_${sonGecmisVeri.target}.csv`, csv);
+        return;
+    }
+
+    // ECB gecmis verisi
+    if (!sonGecmisVeri.rates) {
         alert('\u00d6nce kur verilerini getirmelisiniz.');
         return;
     }
@@ -435,6 +467,41 @@ function gecmisExcelIndir() {
 // UI
 // =============================================
 
+let histKaynak = 'ecb';
+
+function setHistKaynak(kaynak) {
+    histKaynak = kaynak;
+    document.getElementById('btnHistEcb').classList.toggle('active', kaynak === 'ecb');
+    document.getElementById('btnHistTcmb').classList.toggle('active', kaynak === 'tcmb');
+    document.getElementById('histEcbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
+    document.getElementById('histTcmbKontroller').classList.toggle('hidden', kaynak === 'ecb');
+
+    // Tablo basligini sifirla
+    const thead = document.querySelector('#historyTable thead tr');
+    thead.textContent = '';
+    if (kaynak === 'tcmb') {
+        ['Tarih', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
+    } else {
+        ['Tarih', 'Kur De\u011feri'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
+    }
+}
+
+function gecmisKurlariGetirRouter() {
+    if (histKaynak === 'tcmb') {
+        tcmbGecmisKurlariGetir();
+    } else {
+        gecmisKurlariGetir();
+    }
+}
+
 function kurListesiFiltrele(aranan) {
     const rows = document.querySelectorAll('#kurListesiBody tr');
     const q = aranan.toLowerCase().trim();
@@ -462,6 +529,7 @@ function tabDegistir(id, btn) {
 
 window.onload = async function () {
     await paraBirimleriniGetir();
+    tcmbParaBirimleriniDoldur();
 
     // Kaynak tercihini uygula
     setKaynak(currentKaynak);

@@ -133,6 +133,11 @@
             <h2>Geçmiş Kurlar</h2>
 
             <div class="history-controls">
+                <div class="direction-toggle" style="margin-bottom:10px">
+                    <button class="direction-btn active" id="btnHistEcb" onclick="setHistKaynak('ecb')">ECB</button>
+                    <button class="direction-btn" id="btnHistTcmb" onclick="setHistKaynak('tcmb')">TCMB</button>
+                </div>
+
                 <div class="date-group">
                     <div>
                         <label>Başlangıç:</label>
@@ -144,7 +149,7 @@
                     </div>
                 </div>
 
-                <div class="swap-container swap-container--spaced">
+                <div id="histEcbKontroller" class="swap-container swap-container--spaced">
                     <div class="flex-item">
                         <label>Ana Para:</label>
                         <select id="histBase"><option value="USD">USD</option></select>
@@ -155,8 +160,17 @@
                     </div>
                 </div>
 
+                <div id="histTcmbKontroller" class="hidden">
+                    <label class="currency-label">Para Birimi:</label>
+                    <select id="histTcmbTarget">
+                        <option value="USD" selected>USD</option>
+                    </select>
+                </div>
+
+                <div id="histProgress" class="hidden progress-text"></div>
+
                 <div class="button-row">
-                    <button class="btn btn-green btn--flush" onclick="gecmisKurlariGetir()">KURLARI GETİR</button>
+                    <button class="btn btn-green btn--flush" onclick="gecmisKurlariGetirRouter()">KURLARI GETİR</button>
                     <button class="btn btn-csv btn--flush" onclick="gecmisExcelIndir()"><i class="fas fa-file-csv"></i> Excel İndir</button>
                 </div>
             </div>
