@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#ffffff">
     <meta name="color-scheme" content="light">
-    <meta name="description" content="Güncel döviz kurları, hızlı çevirici ve kur arşivi. Canlı USD/TRY, EUR/TRY takibi.">
+    <meta name="description" content="Güncel döviz kurları, hızlı çevirici ve kur arşivi. USD/TRY, EUR/TRY takibi.">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Pratikur - Güncel Döviz Kurları">
-    <meta property="og:description" content="Canlı döviz kurları, hızlı çevirici ve kur arşivi.">
+    <meta property="og:description" content="Güncel döviz kurları, hızlı çevirici ve kur arşivi.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pratikur.com">
 
@@ -33,20 +33,21 @@
     <div class="container">
         <button id="installBtn" onclick="uygulamayiYukle()"><i class="fas fa-download"></i> Uygulamayı Yükle</button>
 
-        <!-- Canlı Piyasa -->
-        <div class="live-market-container">
-            <h3 class="live-market-header">Canlı Piyasa</h3>
-            <div class="live-market">
-                <div class="market-item">
-                    <h4><span class="live-dot"></span>USD/TRY</h4>
-                    <span class="price" id="liveUsd">--.--</span>
+        <!-- Güncel Kur -->
+        <div class="current-rate-container">
+            <div class="current-rate-header">Güncel Kur</div>
+            <div class="current-rate-row">
+                <div class="current-rate-item">
+                    <span class="current-rate-label">USD/TRY</span>
+                    <span class="current-rate-value" id="guncelUsd">--</span>
                 </div>
-                <div style="width:1px; background:#ffffff30;"></div>
-                <div class="market-item">
-                    <h4><span class="live-dot"></span>EUR/TRY</h4>
-                    <span class="price" id="liveEur">--.--</span>
+                <div class="current-rate-divider"></div>
+                <div class="current-rate-item">
+                    <span class="current-rate-label">EUR/TRY</span>
+                    <span class="current-rate-value" id="guncelEur">--</span>
                 </div>
             </div>
+            <div class="current-rate-source" id="guncelKurKaynak">Avrupa Merkez Bankası - Günlük Kapanış</div>
         </div>
 
         <!-- Tabs -->

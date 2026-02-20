@@ -22,68 +22,60 @@ body {
     position: relative;
 }
 
-/* === Canlı Piyasa === */
-.live-market-container {
-    background: #2c3e50;
+/* === Güncel Kur === */
+.current-rate-container {
+    background: #f8f9fa;
     padding: 15px;
-    border-bottom: 4px solid #34495e;
-    position: relative;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
 }
 
-.live-market-header {
-    color: #f1c40f;
-    margin: 0 0 10px 0;
-    font-size: 1rem;
+.current-rate-header {
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 5px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
-.live-market {
+.current-rate-row {
     display: flex;
-    gap: 10px;
-    color: white;
     justify-content: space-around;
+    align-items: center;
 }
 
-.market-item {
-    text-align: center;
+.current-rate-item {
     flex: 1;
-    position: relative;
+    text-align: center;
 }
 
-.market-item h4 {
-    margin: 0;
+.current-rate-label {
+    display: block;
     font-size: 0.8em;
-    color: #bdc3c7;
-    font-weight: normal;
+    color: #888;
     text-transform: uppercase;
+    margin-bottom: 4px;
 }
 
-.market-item .price {
+.current-rate-value {
     font-size: 1.3em;
     font-weight: bold;
-    margin-top: 5px;
+    color: #2c3e50;
     display: block;
-    transition: color 0.3s;
 }
 
-.live-dot {
-    height: 8px;
-    width: 8px;
-    background-color: #2ecc71;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-    animation: blink 1s infinite;
+.current-rate-divider {
+    width: 1px;
+    height: 40px;
+    background: #ddd;
 }
 
-@keyframes blink {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.4; }
-    100% { opacity: 1; }
+.current-rate-source {
+    font-size: 0.7em;
+    color: #aaa;
+    margin-top: 8px;
+    font-style: italic;
 }
 
 /* === Tabs === */
