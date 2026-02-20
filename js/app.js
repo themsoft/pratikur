@@ -8,9 +8,6 @@ let sonGelenVeri = null;
 let sonGecmisVeri = null;
 let currentDirection = 'duz';
 let deferredPrompt;
-let binanceSocket = null;
-let usdTry = 0;
-let eurUsd = 0;
 
 // =============================================
 // PWA
@@ -25,7 +22,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    document.getElementById('installBtn').style.display = 'block';
+    document.getElementById('installBtn').classList.remove('hidden');
 });
 
 function uygulamayiYukle() {
@@ -33,7 +30,7 @@ function uygulamayiYukle() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((result) => {
             if (result.outcome === 'accepted') {
-                document.getElementById('installBtn').style.display = 'none';
+                document.getElementById('installBtn').classList.add('hidden');
             }
             deferredPrompt = null;
         });
@@ -41,61 +38,27 @@ function uygulamayiYukle() {
 }
 
 // =============================================
-// WebSocket (Binance - Canlı Piyasa)
+// Güncel Kur
 // =============================================
 
-function baslatWebSocket() {
-    const streams = 'usdttry@miniTicker/eurusdt@miniTicker';
-    const socketUrl = `wss://stream.binance.com:9443/stream?streams=${streams}`;
+function guncelKurlariGoster() {
+    fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
+        })
+        .catch(() => {
+            document.getElementById('guncelUsd').textContent = '--';
+        });
 
-    try {
-        binanceSocket = new WebSocket(socketUrl);
-
-        binanceSocket.onopen = function () {
-            console.log('Canlı bağlantı sağlandı.');
-        };
-
-        binanceSocket.onmessage = function (event) {
-            const mesaj = JSON.parse(event.data);
-            const veri = mesaj.data;
-
-            if (veri.s === 'USDTTRY') {
-                usdTry = parseFloat(veri.c);
-                updatePriceUI('liveUsd', usdTry);
-                if (eurUsd > 0) updatePriceUI('liveEur', eurUsd * usdTry);
-            } else if (veri.s === 'EURUSDT') {
-                eurUsd = parseFloat(veri.c);
-                if (usdTry > 0) updatePriceUI('liveEur', eurUsd * usdTry);
-            }
-        };
-
-        binanceSocket.onerror = function (error) {
-            console.error('WebSocket bağlantı hatası:', error);
-        };
-
-        binanceSocket.onclose = function () {
-            setTimeout(baslatWebSocket, 5000);
-        };
-    } catch (e) {
-        console.error('Socket başlatılamadı:', e);
-    }
-}
-
-function updatePriceUI(id, price) {
-    const el = document.getElementById(id);
-    const oldPrice = parseFloat(el.innerText.replace('\u20ba', ''));
-
-    el.innerText = price.toFixed(2) + ' \u20ba';
-
-    if (!isNaN(oldPrice)) {
-        if (price > oldPrice) {
-            el.style.color = '#2ecc71';
-        } else if (price < oldPrice) {
-            el.style.color = '#e74c3c';
-        } else {
-            el.style.color = 'white';
-        }
-    }
+    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('guncelEur').textContent = data.rates.TRY.toFixed(4);
+        })
+        .catch(() => {
+            document.getElementById('guncelEur').textContent = '--';
+        });
 }
 
 // =============================================
@@ -193,8 +156,7 @@ function tabloyuGuncelle() {
                 tdName.appendChild(kodBold);
                 tdName.appendChild(document.createTextNode(' '));
                 const kodSpan = document.createElement('span');
-                kodSpan.style.fontSize = '0.8em';
-                kodSpan.style.color = '#888';
+                kodSpan.className = 'currency-name-detail';
                 kodSpan.textContent = tumParaBirimleri[kod] || '';
                 tdName.appendChild(kodSpan);
 
@@ -225,7 +187,7 @@ function tabloyuGuncelle() {
             const errCell = document.createElement('td');
             errCell.colSpan = 2;
             errCell.align = 'center';
-            errCell.style.color = 'red';
+            errCell.className = 'error-text';
             errCell.textContent = 'Veriler y\u00fcklenemedi.';
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
@@ -382,7 +344,7 @@ function gecmisKurlariGetir() {
             const errCell = document.createElement('td');
             errCell.colSpan = 2;
             errCell.align = 'center';
-            errCell.style.color = 'red';
+            errCell.className = 'error-text';
             errCell.textContent = `Hata: ${err.message}`;
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
@@ -402,10 +364,7 @@ function excelIndir() {
         csv += `${k};${String(val.toFixed(4)).replace('.', ',')}\n`;
     });
 
-    const link = document.createElement('a');
-    link.href = encodeURI(csv);
-    link.download = `kur_listesi_${currentDirection}.csv`;
-    link.click();
+    csvIndir(`kur_listesi_${currentDirection}.csv`, csv);
 }
 
 function gecmisExcelIndir() {
@@ -432,10 +391,7 @@ function gecmisExcelIndir() {
         }
     });
 
-    const link = document.createElement('a');
-    link.href = encodeURI(csv);
-    link.download = `kur_arsivi_${base}_${target}.csv`;
-    link.click();
+    csvIndir(`kur_arsivi_${base}_${target}.csv`, csv);
 }
 
 // =============================================
@@ -449,18 +405,12 @@ function tabDegistir(id, btn) {
     btn.classList.add('active');
 }
 
-function formatla(n) {
-    if (n < 0.01) return n.toFixed(6);
-    if (n < 1) return n.toFixed(4);
-    return n.toFixed(2);
-}
-
 // =============================================
 // Init
 // =============================================
 
 window.onload = async function () {
-    baslatWebSocket();
+    guncelKurlariGoster();
     await paraBirimleriniGetir();
     tabloyuGuncelle();
 };

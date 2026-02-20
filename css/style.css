@@ -22,68 +22,60 @@ body {
     position: relative;
 }
 
-/* === Canlı Piyasa === */
-.live-market-container {
-    background: #2c3e50;
+/* === Güncel Kur === */
+.current-rate-container {
+    background: #f8f9fa;
     padding: 15px;
-    border-bottom: 4px solid #34495e;
-    position: relative;
+    border-bottom: 2px solid #e9ecef;
+    text-align: center;
 }
 
-.live-market-header {
-    color: #f1c40f;
-    margin: 0 0 10px 0;
-    font-size: 1rem;
+.current-rate-header {
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 5px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
-.live-market {
+.current-rate-row {
     display: flex;
-    gap: 10px;
-    color: white;
     justify-content: space-around;
+    align-items: center;
 }
 
-.market-item {
-    text-align: center;
+.current-rate-item {
     flex: 1;
-    position: relative;
+    text-align: center;
 }
 
-.market-item h4 {
-    margin: 0;
+.current-rate-label {
+    display: block;
     font-size: 0.8em;
-    color: #bdc3c7;
-    font-weight: normal;
+    color: #888;
     text-transform: uppercase;
+    margin-bottom: 4px;
 }
 
-.market-item .price {
+.current-rate-value {
     font-size: 1.3em;
     font-weight: bold;
-    margin-top: 5px;
+    color: #2c3e50;
     display: block;
-    transition: color 0.3s;
 }
 
-.live-dot {
-    height: 8px;
-    width: 8px;
-    background-color: #2ecc71;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-    animation: blink 1s infinite;
+.current-rate-divider {
+    width: 1px;
+    height: 40px;
+    background: #ddd;
 }
 
-@keyframes blink {
-    0%   { opacity: 1; }
-    50%  { opacity: 0.4; }
-    100% { opacity: 1; }
+.current-rate-source {
+    font-size: 0.7em;
+    color: #aaa;
+    margin-top: 8px;
+    font-style: italic;
 }
 
 /* === Tabs === */
@@ -240,7 +232,6 @@ input[type="date"] {
 }
 
 #installBtn {
-    display: none;
     background: #333;
     color: white;
     width: 100%;
@@ -280,6 +271,10 @@ td {
     padding: 10px;
     border-bottom: 1px solid #f1f1f1;
     font-size: 0.95em;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9fafb;
 }
 
 /* === Sonuç & Bilgi Kutuları === */
@@ -415,6 +410,47 @@ td {
     color: #666;
 }
 
+/* === Utility Classes === */
+.currency-label {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+.flex-item--spaced {
+    margin-left: 10px;
+}
+
+.swap-container--spaced {
+    margin-bottom: 15px;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+}
+
+.btn--flush {
+    margin-top: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.currency-name-detail {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.error-text {
+    color: red;
+}
+
 /* === Footer === */
 .footer-links {
     text-align: center;
@@ -427,4 +463,89 @@ td {
 .footer-links a {
     color: #999;
     text-decoration: none;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .tab-btn {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .tab-btn i {
+        display: block;
+        margin-bottom: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        border-radius: 8px;
+    }
+
+    .tab-btn {
+        padding: 10px 4px;
+        font-size: 11px;
+    }
+
+    .content {
+        padding: 15px 12px;
+    }
+
+    .direction-btn {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+
+    .current-rate-value {
+        font-size: 1.1em;
+    }
+
+    .date-group {
+        flex-direction: column;
+    }
+
+    .swap-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .swap-btn {
+        align-self: center;
+        margin: 8px 0;
+    }
+
+    .flex-item--spaced {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    .sonuc-kutusu {
+        font-size: 1em;
+    }
+
+    .table-container {
+        max-height: 300px;
+    }
+
+    td, th {
+        padding: 8px 6px;
+        font-size: 0.85em;
+    }
 }
