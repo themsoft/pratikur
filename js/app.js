@@ -139,7 +139,7 @@ function guncelKurlariGuncelle() {
         tcmbGuncelKurlariGoster();
     } else {
         guncelKurlariGoster();
-        document.getElementById('guncelKurKaynak').textContent = 'Avrupa Merkez Bankas\u0131 - G\u00fcnl\u00fck Kapan\u0131\u015f';
+        document.getElementById('guncelKurKaynak').textContent = t('ecbKaynak');
     }
 }
 
@@ -173,7 +173,7 @@ function tabloyuGuncelle() {
     const loadingCell = document.createElement('td');
     loadingCell.colSpan = 2;
     loadingCell.align = 'center';
-    loadingCell.textContent = '\u23f3 G\u00fcncelleniyor...';
+    loadingCell.textContent = t('guncelleniyor');
     loadingRow.appendChild(loadingCell);
     tbody.appendChild(loadingRow);
 
@@ -187,9 +187,9 @@ function tabloyuGuncelle() {
             const icon = document.createElement('i');
             icon.className = 'fas fa-info-circle';
             zamanBox.appendChild(icon);
-            zamanBox.appendChild(document.createTextNode(' Avrupa Merkez Bankas\u0131 Kuru '));
+            zamanBox.appendChild(document.createTextNode(' ' + t('ecbKuru') + ' '));
             const bold = document.createElement('b');
-            bold.textContent = '(G\u00fcnl\u00fck Kapan\u0131\u015f)';
+            bold.textContent = t('ecbKapanis');
             zamanBox.appendChild(bold);
             zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
 
@@ -235,7 +235,7 @@ function tabloyuGuncelle() {
             errCell.colSpan = 2;
             errCell.align = 'center';
             errCell.className = 'error-text';
-            errCell.textContent = 'Veriler y\u00fcklenemedi.';
+            errCell.textContent = t('verilerYuklenemedi');
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
         });
@@ -260,7 +260,7 @@ function ozelHesapla() {
     const resBox = document.getElementById('calcResult');
 
     if (from === to) {
-        resBox.textContent = 'Ayni para birimi secili.';
+        resBox.textContent = t('ayniParaBirimi');
         return;
     }
 
@@ -268,7 +268,7 @@ function ozelHesapla() {
     const spinner = document.createElement('i');
     spinner.className = 'fas fa-spinner fa-spin';
     resBox.appendChild(spinner);
-    resBox.appendChild(document.createTextNode(' Hesaplaniyor...'));
+    resBox.appendChild(document.createTextNode(' ' + t('hesaplaniyor')));
 
     fetchWithRetry(`https://api.frankfurter.dev/v1/latest?amount=${amt}&from=${from}&to=${to}`)
         .then(d => {
@@ -285,7 +285,7 @@ function ozelHesapla() {
         })
         .catch(err => {
             console.error('Hesaplama hatasi:', err);
-            resBox.textContent = 'Hesaplama yapilamadi.';
+            resBox.textContent = t('hesaplamaYapilamadi');
         });
 }
 
@@ -333,9 +333,9 @@ function gecmisKurlariGetir() {
     const target = document.getElementById('histTarget').value;
     const tbody = document.getElementById('historyBody');
 
-    if (!start || !end) { alert('L\u00fctfen tarih araligi secin.'); return; }
-    if (start > end) { alert('Baslangic tarihi bitis tarihinden buyuk olamaz.'); return; }
-    if (base === target) { alert('Para birimleri farkli olmali.'); return; }
+    if (!start || !end) { alert(t('tarihSecin')); return; }
+    if (start > end) { alert(t('tarihHata')); return; }
+    if (base === target) { alert(t('paraBirimiFarkli')); return; }
 
     tbody.textContent = '';
     const loadRow = document.createElement('tr');
@@ -345,7 +345,7 @@ function gecmisKurlariGetir() {
     const loadSpinner = document.createElement('i');
     loadSpinner.className = 'fas fa-spinner fa-spin';
     loadCell.appendChild(loadSpinner);
-    loadCell.appendChild(document.createTextNode(' Y\u00fckleniyor...'));
+    loadCell.appendChild(document.createTextNode(' ' + t('yukleniyor')));
     loadRow.appendChild(loadCell);
     tbody.appendChild(loadRow);
 
@@ -359,7 +359,7 @@ function gecmisKurlariGetir() {
                 const emptyCell = document.createElement('td');
                 emptyCell.colSpan = 2;
                 emptyCell.align = 'center';
-                emptyCell.textContent = 'Bu tarih araligi icin veri bulunamadi.';
+                emptyCell.textContent = t('veriBulunamadi');
                 emptyRow.appendChild(emptyCell);
                 tbody.appendChild(emptyRow);
                 return;
@@ -417,14 +417,14 @@ function excelIndir() {
 
 function gecmisExcelIndir() {
     if (!sonGecmisVeri) {
-        alert('\u00d6nce kur verilerini getirmelisiniz.');
+        alert(t('onceGetirin'));
         return;
     }
 
     // TCMB gecmis verisi
     if (sonGecmisVeri.tcmb) {
         if (!sonGecmisVeri.results || sonGecmisVeri.results.length === 0) {
-            alert('\u0130ndirilecek veri yok.');
+            alert(t('indirilecekVeriYok'));
             return;
         }
         let csv = `data:text/csv;charset=utf-8,\uFEFFTarih;Alis;Satis\n`;
@@ -438,13 +438,13 @@ function gecmisExcelIndir() {
 
     // ECB gecmis verisi
     if (!sonGecmisVeri.rates) {
-        alert('\u00d6nce kur verilerini getirmelisiniz.');
+        alert(t('onceGetirin'));
         return;
     }
 
     const dates = Object.keys(sonGecmisVeri.rates).sort().reverse();
     if (dates.length === 0) {
-        alert('\u0130ndirilecek veri yok.');
+        alert(t('indirilecekVeriYok'));
         return;
     }
 
@@ -528,6 +528,11 @@ function tabDegistir(id, btn) {
 // =============================================
 
 window.onload = async function () {
+    // Dil tercihini uygula
+    document.getElementById('btnTr').classList.toggle('active', currentLang === 'tr');
+    document.getElementById('btnEn').classList.toggle('active', currentLang === 'en');
+    translatePage();
+
     await paraBirimleriniGetir();
     tcmbParaBirimleriniDoldur();
 

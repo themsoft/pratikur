@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" data-i18n-title="privacyPageTitle">
 
 <head>
     <meta charset="UTF-8">
@@ -29,6 +29,33 @@
             max-width: 600px;
             margin: 20px 0;
             position: relative;
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 2px;
+            z-index: 20;
+        }
+
+        .lang-btn {
+            padding: 4px 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #888;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .lang-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
         }
 
         h1 {
@@ -92,59 +119,90 @@
             border-top: 1px solid #eee;
             padding-top: 15px;
         }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-list a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .contact-icon {
+            margin-right: 8px;
+            color: #555;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h1>Gizlilik Politikası</h1>
+        <!-- Dil Secici -->
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btnTr" onclick="setDil('tr')">TR</button>
+            <button class="lang-btn" id="btnEn" onclick="setDil('en')">EN</button>
+        </div>
 
-        <p><strong>Son Güncelleme:</strong> 9 Şubat 2026</p>
+        <h1 data-i18n="privacyTitle">Gizlilik Politikası</h1>
 
-        <p>Bu gizlilik politikası, <strong>Pratikur</strong>'u kullanırken verilerinizin nasıl
+        <p><strong data-i18n="privacySonGuncelleme">Son Güncelleme:</strong> <span data-i18n="privacySonGuncellemeTarih">9 Şubat 2026</span></p>
+
+        <p data-i18n="privacyGiris">Bu gizlilik politikası, Pratikur'u kullanırken verilerinizin nasıl
             toplandığını, kullanıldığını ve korunduğunu açıklar.</p>
 
-        <h2>1. Toplanan Bilgiler</h2>
-        <p>Uygulamamız, kullanıcı gizliliğine önem verir ve kişisel verilerinizi toplamaz. Sadece uygulamanın çalışması
+        <h2 data-i18n="privacyBolum1Baslik">1. Toplanan Bilgiler</h2>
+        <p data-i18n="privacyBolum1Metin">Uygulamamız, kullanıcı gizliliğine önem verir ve kişisel verilerinizi toplamaz. Sadece uygulamanın çalışması
             için gerekli olan ve kimliğinizi belirlemeyen veriler işlenir:</p>
         <ul>
-            <li><strong>Teknik Bilgiler:</strong> Tarayıcı türü, cihaz modeli gibi anonim teknik veriler.</li>
-            <li><strong>Yerel Tercihler:</strong> Seçtiğiniz para birimleri veya tema ayarları gibi tercihler sadece
-                sizin cihazınızda saklanır.</li>
+            <li><strong data-i18n="privacyTeknikBilgi">Teknik Bilgiler:</strong> <span data-i18n="privacyTeknikAciklama">Tarayıcı türü, cihaz modeli gibi anonim teknik veriler.</span></li>
+            <li><strong data-i18n="privacyYerelTercih">Yerel Tercihler:</strong> <span data-i18n="privacyYerelAciklama">Seçtiğiniz para birimleri veya tema ayarları gibi tercihler sadece
+                sizin cihazınızda saklanır.</span></li>
         </ul>
 
-        <h2>2. Çerezler ve Yerel Depolama (Local Storage)</h2>
-        <p>Herhangi bir sunucu tarafı çerez (cookie) kullanmıyoruz. Ancak, kullanıcı deneyiminizi iyileştirmek için
-            tarayıcınızın <strong>Local Storage</strong> özelliğini kullanabiliriz. Bu, son yaptığınız hesaplamaları
+        <h2 data-i18n="privacyBolum2Baslik">2. Çerezler ve Yerel Depolama (Local Storage)</h2>
+        <p data-i18n="privacyBolum2Metin">Herhangi bir sunucu tarafı çerez (cookie) kullanmıyoruz. Ancak, kullanıcı deneyiminizi iyileştirmek için
+            tarayıcınızın Local Storage özelliğini kullanabiliriz. Bu, son yaptığınız hesaplamaları
             veya tercihlerinizi hatırlamamızı sağlar. Bu veriler cihazınızdan çıkmaz.</p>
 
-        <h2>3. Üçüncü Taraf Hizmetler</h2>
-        <p>Uygulamamız döviz kurlarını sağlamak için dış kaynaklı API servislerini (örneğin Frankfurter API, Binance
-            API) kullanır. Bu servislerle iletişim kurulurken IP adresiniz gibi standart ağ bilgileri bu sağlayıcılar
+        <h2 data-i18n="privacyBolum3Baslik">3. Üçüncü Taraf Hizmetler</h2>
+        <p data-i18n="privacyBolum3Metin">Uygulamamız döviz kurlarını sağlamak için dış kaynaklı API servislerini (Avrupa Merkez Bankası, T.C. Merkez Bankası) kullanır. Bu servislerle iletişim kurulurken IP adresiniz gibi standart ağ bilgileri bu sağlayıcılar
             tarafından görülebilir.</p>
 
-        <h2>4. Güvenlik</h2>
-        <p>Kişisel veri toplamadığımız için, verilerinizin çalınması veya sızdırılması riski minimumdur. Uygulama ile
+        <h2 data-i18n="privacyBolum4Baslik">4. Güvenlik</h2>
+        <p data-i18n="privacyBolum4Metin">Kişisel veri toplamadığımız için, verilerinizin çalınması veya sızdırılması riski minimumdur. Uygulama ile
             ilgili tüm iletişim HTTPS protokolü üzerinden şifreli olarak gerçekleşir.</p>
 
-        <h2>5. İletişim</h2>
-        <p>Bu politika hakkında sorularınız varsa, lütfen geliştirici ile iletişime geçin:</p>
-        <ul style="list-style: none; padding: 0;">
+        <h2 data-i18n="privacyBolum5Baslik">5. İletişim</h2>
+        <p data-i18n="privacyBolum5Metin">Bu politika hakkında sorularınız varsa, lütfen geliştirici ile iletişime geçin:</p>
+        <ul class="contact-list">
             <li>
-                <i class="fab fa-github" style="margin-right: 8px; color: #555;"></i>
+                <i class="fab fa-github contact-icon"></i>
                 <strong>GitHub:</strong>
-                <a href="https://github.com/themsoft" target="_blank"
-                    style="color: #007bff; text-decoration: none;">github.com/themsoft</a>
+                <a href="https://github.com/themsoft" target="_blank">github.com/themsoft</a>
             </li>
         </ul>
 
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Ana Sayfaya Dön</a>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> <span data-i18n="privacyGeriDon">Ana Sayfaya Dön</span></a>
 
-        <div class="footer-note">
+        <div class="footer-note" data-i18n="privacyFooter">
             &copy; 2026 Pratikur. Tüm hakları saklıdır.
         </div>
     </div>
+
+    <script src="js/i18n.js"></script>
+    <script>
+        // Sayfa yuklenince dil tercihini uygula
+        (function() {
+            var lang = localStorage.getItem('pratikur_lang') || 'tr';
+            currentLang = lang;
+            document.getElementById('btnTr').classList.toggle('active', lang === 'tr');
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+            translatePage();
+        })();
+    </script>
 
 </body>
 
