@@ -451,6 +451,24 @@ tbody tr:nth-child(even) {
     color: red;
 }
 
+/* === Arama === */
+.search-input {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
 /* === Footer === */
 .footer-links {
     text-align: center;

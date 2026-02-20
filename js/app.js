@@ -42,8 +42,7 @@ function uygulamayiYukle() {
 // =============================================
 
 function guncelKurlariGoster() {
-    fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
-        .then(res => res.json())
+    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
         .then(data => {
             document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
         })
@@ -51,8 +50,7 @@ function guncelKurlariGoster() {
             document.getElementById('guncelUsd').textContent = '--';
         });
 
-    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
-        .then(res => res.json())
+    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
         .then(data => {
             document.getElementById('guncelEur').textContent = data.rates.TRY.toFixed(4);
         })
@@ -67,8 +65,7 @@ function guncelKurlariGoster() {
 
 async function paraBirimleriniGetir() {
     try {
-        const response = await fetch('https://api.frankfurter.dev/v1/currencies');
-        tumParaBirimleri = await response.json();
+        tumParaBirimleri = await fetchWithRetry('https://api.frankfurter.dev/v1/currencies');
 
         const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo', 'histBase', 'histTarget'];
         selectIds.forEach(id => {
@@ -129,8 +126,7 @@ function tabloyuGuncelle() {
     loadingRow.appendChild(loadingCell);
     tbody.appendChild(loadingRow);
 
-    fetch(`https://api.frankfurter.dev/v1/latest?base=${base}`)
-        .then(res => res.json())
+    fetchWithRetry(`https://api.frankfurter.dev/v1/latest?base=${base}`)
         .then(data => {
             sonGelenVeri = data;
             tbody.textContent = '';
@@ -223,8 +219,7 @@ function ozelHesapla() {
     resBox.appendChild(spinner);
     resBox.appendChild(document.createTextNode(' Hesaplaniyor...'));
 
-    fetch(`https://api.frankfurter.dev/v1/latest?amount=${amt}&from=${from}&to=${to}`)
-        .then(r => r.json())
+    fetchWithRetry(`https://api.frankfurter.dev/v1/latest?amount=${amt}&from=${from}&to=${to}`)
         .then(d => {
             const formatted = new Intl.NumberFormat('tr-TR', {
                 style: 'currency',
@@ -244,30 +239,36 @@ function ozelHesapla() {
 }
 
 function updateHistory(text) {
-    const ul = document.getElementById('historyList');
-    const li = document.createElement('li');
-    li.className = 'history-item';
     const time = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-    const spanText = document.createElement('span');
-    spanText.textContent = text;
-    const spanTime = document.createElement('span');
-    spanTime.className = 'history-time';
-    spanTime.textContent = time;
+    // localStorage'a kaydet
+    let history = JSON.parse(localStorage.getItem('pratikur_history') || '[]');
+    history.unshift({ text, time });
+    if (history.length > 5) history = history.slice(0, 5);
+    localStorage.setItem('pratikur_history', JSON.stringify(history));
 
-    li.appendChild(spanText);
-    li.appendChild(spanTime);
+    renderHistory();
+}
 
-    if (ul.firstChild) {
-        ul.insertBefore(li, ul.firstChild);
-    } else {
+function renderHistory() {
+    const ul = document.getElementById('historyList');
+    const history = JSON.parse(localStorage.getItem('pratikur_history') || '[]');
+    ul.textContent = '';
+
+    history.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+
+        const spanText = document.createElement('span');
+        spanText.textContent = item.text;
+        const spanTime = document.createElement('span');
+        spanTime.className = 'history-time';
+        spanTime.textContent = item.time;
+
+        li.appendChild(spanText);
+        li.appendChild(spanTime);
         ul.appendChild(li);
-    }
-
-    // Maksimum 5 kayit tut
-    if (ul.children.length > 5) {
-        ul.removeChild(ul.lastChild);
-    }
+    });
 }
 
 // =============================================
@@ -297,11 +298,7 @@ function gecmisKurlariGetir() {
     loadRow.appendChild(loadCell);
     tbody.appendChild(loadRow);
 
-    fetch(`https://api.frankfurter.dev/v1/${start}..${end}?from=${base}&to=${target}`)
-        .then(res => {
-            if (!res.ok) throw new Error('Veri alinamadi');
-            return res.json();
-        })
+    fetchWithRetry(`https://api.frankfurter.dev/v1/${start}..${end}?from=${base}&to=${target}`)
         .then(data => {
             sonGecmisVeri = data;
             tbody.textContent = '';
@@ -398,6 +395,20 @@ function gecmisExcelIndir() {
 // UI
 // =============================================
 
+function kurListesiFiltrele(aranan) {
+    const rows = document.querySelectorAll('#kurListesiBody tr');
+    const q = aranan.toLowerCase().trim();
+
+    rows.forEach(row => {
+        if (!q) {
+            row.classList.remove('hidden');
+            return;
+        }
+        const text = row.textContent.toLowerCase();
+        row.classList.toggle('hidden', !text.includes(q));
+    });
+}
+
 function tabDegistir(id, btn) {
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -413,4 +424,17 @@ window.onload = async function () {
     guncelKurlariGoster();
     await paraBirimleriniGetir();
     tabloyuGuncelle();
+
+    // Enter tusu ile hesaplama
+    document.getElementById('calcAmount').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') ozelHesapla();
+    });
+
+    // Kur listesi arama
+    document.getElementById('kurArama').addEventListener('input', function () {
+        kurListesiFiltrele(this.value);
+    });
+
+    // Kayitli hesaplama gecmisini yukle
+    renderHistory();
 };
