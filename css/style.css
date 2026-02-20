@@ -232,7 +232,6 @@ input[type="date"] {
 }
 
 #installBtn {
-    display: none;
     background: #333;
     color: white;
     width: 100%;
@@ -405,6 +404,47 @@ td {
     margin-bottom: 5px;
     font-size: 0.9em;
     color: #666;
+}
+
+/* === Utility Classes === */
+.currency-label {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+.flex-item--spaced {
+    margin-left: 10px;
+}
+
+.swap-container--spaced {
+    margin-bottom: 15px;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+}
+
+.btn--flush {
+    margin-top: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.currency-name-detail {
+    font-size: 0.8em;
+    color: #888;
+}
+
+.error-text {
+    color: red;
 }
 
 /* === Footer === */

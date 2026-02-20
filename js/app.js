@@ -22,7 +22,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    document.getElementById('installBtn').style.display = 'block';
+    document.getElementById('installBtn').classList.remove('hidden');
 });
 
 function uygulamayiYukle() {
@@ -30,7 +30,7 @@ function uygulamayiYukle() {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((result) => {
             if (result.outcome === 'accepted') {
-                document.getElementById('installBtn').style.display = 'none';
+                document.getElementById('installBtn').classList.add('hidden');
             }
             deferredPrompt = null;
         });
@@ -156,8 +156,7 @@ function tabloyuGuncelle() {
                 tdName.appendChild(kodBold);
                 tdName.appendChild(document.createTextNode(' '));
                 const kodSpan = document.createElement('span');
-                kodSpan.style.fontSize = '0.8em';
-                kodSpan.style.color = '#888';
+                kodSpan.className = 'currency-name-detail';
                 kodSpan.textContent = tumParaBirimleri[kod] || '';
                 tdName.appendChild(kodSpan);
 
@@ -188,7 +187,7 @@ function tabloyuGuncelle() {
             const errCell = document.createElement('td');
             errCell.colSpan = 2;
             errCell.align = 'center';
-            errCell.style.color = 'red';
+            errCell.className = 'error-text';
             errCell.textContent = 'Veriler y\u00fcklenemedi.';
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
@@ -345,7 +344,7 @@ function gecmisKurlariGetir() {
             const errCell = document.createElement('td');
             errCell.colSpan = 2;
             errCell.align = 'center';
-            errCell.style.color = 'red';
+            errCell.className = 'error-text';
             errCell.textContent = `Hata: ${err.message}`;
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
