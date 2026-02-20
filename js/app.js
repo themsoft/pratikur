@@ -244,30 +244,36 @@ function ozelHesapla() {
 }
 
 function updateHistory(text) {
-    const ul = document.getElementById('historyList');
-    const li = document.createElement('li');
-    li.className = 'history-item';
     const time = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-    const spanText = document.createElement('span');
-    spanText.textContent = text;
-    const spanTime = document.createElement('span');
-    spanTime.className = 'history-time';
-    spanTime.textContent = time;
+    // localStorage'a kaydet
+    let history = JSON.parse(localStorage.getItem('pratikur_history') || '[]');
+    history.unshift({ text, time });
+    if (history.length > 5) history = history.slice(0, 5);
+    localStorage.setItem('pratikur_history', JSON.stringify(history));
 
-    li.appendChild(spanText);
-    li.appendChild(spanTime);
+    renderHistory();
+}
 
-    if (ul.firstChild) {
-        ul.insertBefore(li, ul.firstChild);
-    } else {
+function renderHistory() {
+    const ul = document.getElementById('historyList');
+    const history = JSON.parse(localStorage.getItem('pratikur_history') || '[]');
+    ul.textContent = '';
+
+    history.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+
+        const spanText = document.createElement('span');
+        spanText.textContent = item.text;
+        const spanTime = document.createElement('span');
+        spanTime.className = 'history-time';
+        spanTime.textContent = item.time;
+
+        li.appendChild(spanText);
+        li.appendChild(spanTime);
         ul.appendChild(li);
-    }
-
-    // Maksimum 5 kayit tut
-    if (ul.children.length > 5) {
-        ul.removeChild(ul.lastChild);
-    }
+    });
 }
 
 // =============================================
@@ -418,4 +424,7 @@ window.onload = async function () {
     document.getElementById('calcAmount').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') ozelHesapla();
     });
+
+    // Kayitli hesaplama gecmisini yukle
+    renderHistory();
 };
