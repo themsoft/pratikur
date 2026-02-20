@@ -61,6 +61,7 @@
             <button class="tab-btn active" onclick="tabDegistir('tab1', this)"><i class="fas fa-list"></i> <span data-i18n="tabListe">Liste</span></button>
             <button class="tab-btn" onclick="tabDegistir('tab2', this)"><i class="fas fa-calculator"></i> <span data-i18n="tabCevirici">Çevirici</span></button>
             <button class="tab-btn" onclick="tabDegistir('tab3', this)"><i class="fas fa-history"></i> <span data-i18n="tabArsiv">Kur Arşivi</span></button>
+            <button class="tab-btn" onclick="tabDegistir('tab4', this)"><i class="fas fa-chart-line"></i> <span data-i18n="tabIstatistik">İstatistik</span></button>
         </div>
 
         <!-- Tab 1: Kur Listesi -->
@@ -196,6 +197,42 @@
             </div>
         </div>
 
+        <!-- Tab 4: İstatistikler -->
+        <div id="tab4" class="content">
+            <h2 data-i18n="kurIstatistikleri">Kur İstatistikleri</h2>
+
+            <div class="history-controls">
+                <div class="date-group">
+                    <div>
+                        <label data-i18n="baslangic">Başlangıç:</label>
+                        <input type="date" id="statStartDate">
+                    </div>
+                    <div>
+                        <label data-i18n="bitis">Bitiş:</label>
+                        <input type="date" id="statEndDate">
+                    </div>
+                </div>
+
+                <div class="swap-container swap-container--spaced">
+                    <div class="flex-item">
+                        <label data-i18n="anaPara">Ana Para:</label>
+                        <select id="statBase"><option value="USD">USD</option></select>
+                    </div>
+                    <div class="flex-item flex-item--spaced">
+                        <label data-i18n="hedefPara">Hedef Para:</label>
+                        <select id="statTarget"><option value="TRY" selected>TRY</option></select>
+                    </div>
+                </div>
+
+                <button class="btn btn-green btn--flush" onclick="istatistikHesapla()" data-i18n="istatistikHesapla">İSTATİSTİKLERİ HESAPLA</button>
+            </div>
+
+            <div id="statProgress" class="hidden progress-text"></div>
+            <div id="statSonuclar" class="stat-container"></div>
+
+            <div class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
+        </div>
+
         <div class="footer-links">
             <a href="privacy.html" data-i18n="gizlilikPolitikasi">Gizlilik Politikası</a>
         </div>
@@ -204,6 +241,7 @@
     <script src="js/utils.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/tcmb.js"></script>
+    <script src="js/stats.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

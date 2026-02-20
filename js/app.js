@@ -68,7 +68,7 @@ async function paraBirimleriniGetir() {
     try {
         tumParaBirimleri = await fetchWithRetry('https://api.frankfurter.dev/v1/currencies');
 
-        const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo', 'histBase', 'histTarget'];
+        const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo', 'histBase', 'histTarget', 'statBase', 'statTarget'];
         selectIds.forEach(id => {
             const el = document.getElementById(id);
             el.textContent = '';
@@ -85,13 +85,21 @@ async function paraBirimleriniGetir() {
         document.getElementById('calcTo').value = 'TRY';
         document.getElementById('histBase').value = 'USD';
         document.getElementById('histTarget').value = 'TRY';
+        document.getElementById('statBase').value = 'USD';
+        document.getElementById('statTarget').value = 'TRY';
 
-        // Varsayilan tarih araligi (son 7 gun)
+        // Varsayilan tarih araligi
         const today = new Date();
         const lastWeek = new Date();
         lastWeek.setDate(today.getDate() - 7);
         document.getElementById('histEndDate').valueAsDate = today;
         document.getElementById('histStartDate').valueAsDate = lastWeek;
+
+        // Istatistik: son 30 gun
+        const lastMonth = new Date();
+        lastMonth.setDate(today.getDate() - 30);
+        document.getElementById('statEndDate').valueAsDate = today;
+        document.getElementById('statStartDate').valueAsDate = lastMonth;
     } catch (e) {
         console.error('Para birimleri alinamadi:', e);
     }

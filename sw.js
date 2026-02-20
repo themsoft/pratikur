@@ -6,6 +6,7 @@ const ASSETS = [
   '/js/utils.js',
   '/js/i18n.js',
   '/js/tcmb.js',
+  '/js/stats.js',
   '/js/app.js',
   '/site.webmanifest'
 ];

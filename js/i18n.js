@@ -69,6 +69,25 @@ const TRANSLATIONS = {
         indirilecekVeriYok: '\u0130ndirilecek veri yok.',
         gunYukleniyor: ' g\u00fcn y\u00fckleniyor...',
 
+        // Tab 4 - Istatistikler
+        tabIstatistik: '\u0130statistik',
+        kurIstatistikleri: 'Kur \u0130statistikleri',
+        istatistikHesapla: '\u0130STAT\u0130ST\u0130KLER\u0130 HESAPLA',
+        aylikOrtalama: 'Ayl\u0131k Ortalama',
+        enDusuk: 'En D\u00fc\u015f\u00fck',
+        enYuksek: 'En Y\u00fcksek',
+        degisimOranlari: 'De\u011fi\u015fim Oranlar\u0131',
+        gunlukDegisim: 'G\u00fcnl\u00fck',
+        haftalikDegisim: 'Haftal\u0131k',
+        aylikDegisim: 'Ayl\u0131k',
+        donemBaslangic: 'D\u00f6nem Ba\u015flang\u0131c\u0131',
+        donemSon: 'D\u00f6nem Sonu',
+        toplamDegisim: 'Toplam De\u011fi\u015fim',
+        ortalama: 'Ortalama',
+        ay: 'Ay',
+        statHesaplaniyor: '\u0130statistikler hesaplan\u0131yor...',
+        statVeriBulunamadi: 'Se\u00e7ilen tarih aral\u0131\u011f\u0131 i\u00e7in veri bulunamad\u0131.',
+
         // Footer
         gizlilikPolitikasi: 'Gizlilik Politikas\u0131',
 
@@ -164,6 +183,25 @@ const TRANSLATIONS = {
         onceGetirin: 'Please fetch the rate data first.',
         indirilecekVeriYok: 'No data to download.',
         gunYukleniyor: ' days loading...',
+
+        // Tab 4 - Statistics
+        tabIstatistik: 'Statistics',
+        kurIstatistikleri: 'Rate Statistics',
+        istatistikHesapla: 'CALCULATE STATISTICS',
+        aylikOrtalama: 'Monthly Average',
+        enDusuk: 'Lowest',
+        enYuksek: 'Highest',
+        degisimOranlari: 'Change Rates',
+        gunlukDegisim: 'Daily',
+        haftalikDegisim: 'Weekly',
+        aylikDegisim: 'Monthly',
+        donemBaslangic: 'Period Start',
+        donemSon: 'Period End',
+        toplamDegisim: 'Total Change',
+        ortalama: 'Average',
+        ay: 'Month',
+        statHesaplaniyor: 'Calculating statistics...',
+        statVeriBulunamadi: 'No data found for the selected date range.',
 
         // Footer
         gizlilikPolitikasi: 'Privacy Policy',
