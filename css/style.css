@@ -273,6 +273,10 @@ td {
     font-size: 0.95em;
 }
 
+tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
 /* === Sonuç & Bilgi Kutuları === */
 .sonuc-kutusu {
     background: #eefcf1;
@@ -459,4 +463,89 @@ td {
 .footer-links a {
     color: #999;
     text-decoration: none;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .tab-btn {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .tab-btn i {
+        display: block;
+        margin-bottom: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        border-radius: 8px;
+    }
+
+    .tab-btn {
+        padding: 10px 4px;
+        font-size: 11px;
+    }
+
+    .content {
+        padding: 15px 12px;
+    }
+
+    .direction-btn {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+
+    .current-rate-value {
+        font-size: 1.1em;
+    }
+
+    .date-group {
+        flex-direction: column;
+    }
+
+    .swap-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .swap-btn {
+        align-self: center;
+        margin: 8px 0;
+    }
+
+    .flex-item--spaced {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    .sonuc-kutusu {
+        font-size: 1em;
+    }
+
+    .table-container {
+        max-height: 300px;
+    }
+
+    td, th {
+        padding: 8px 6px;
+        font-size: 0.85em;
+    }
 }
