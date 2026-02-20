@@ -364,10 +364,7 @@ function excelIndir() {
         csv += `${k};${String(val.toFixed(4)).replace('.', ',')}\n`;
     });
 
-    const link = document.createElement('a');
-    link.href = encodeURI(csv);
-    link.download = `kur_listesi_${currentDirection}.csv`;
-    link.click();
+    csvIndir(`kur_listesi_${currentDirection}.csv`, csv);
 }
 
 function gecmisExcelIndir() {
@@ -394,10 +391,7 @@ function gecmisExcelIndir() {
         }
     });
 
-    const link = document.createElement('a');
-    link.href = encodeURI(csv);
-    link.download = `kur_arsivi_${base}_${target}.csv`;
-    link.click();
+    csvIndir(`kur_arsivi_${base}_${target}.csv`, csv);
 }
 
 // =============================================
@@ -409,12 +403,6 @@ function tabDegistir(id, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
-}
-
-function formatla(n) {
-    if (n < 0.01) return n.toFixed(6);
-    if (n < 1) return n.toFixed(4);
-    return n.toFixed(2);
 }
 
 // =============================================
