@@ -73,7 +73,30 @@ const TRANSLATIONS = {
         gizlilikPolitikasi: 'Gizlilik Politikas\u0131',
 
         // Title
-        pageTitle: 'Pratikur - G\u00fcncel D\u00f6viz Kurlar\u0131 & Kur Ar\u015fivi'
+        pageTitle: 'Pratikur - G\u00fcncel D\u00f6viz Kurlar\u0131 & Kur Ar\u015fivi',
+
+        // Privacy
+        privacyTitle: 'Gizlilik Politikas\u0131',
+        privacyPageTitle: 'Gizlilik Politikas\u0131 - Pratikur',
+        privacySonGuncelleme: 'Son G\u00fcncelleme:',
+        privacySonGuncellemeTarih: '9 \u015eubat 2026',
+        privacyGiris: 'Bu gizlilik politikas\u0131, Pratikur\'u kullan\u0131rken verilerinizin nas\u0131l topland\u0131\u011f\u0131n\u0131, kullan\u0131ld\u0131\u011f\u0131n\u0131 ve korundu\u011funu a\u00e7\u0131klar.',
+        privacyBolum1Baslik: '1. Toplanan Bilgiler',
+        privacyBolum1Metin: 'Uygulamam\u0131z, kullan\u0131c\u0131 gizlili\u011fine \u00f6nem verir ve ki\u015fisel verilerinizi toplamaz. Sadece uygulaman\u0131n \u00e7al\u0131\u015fmas\u0131 i\u00e7in gerekli olan ve kimli\u011finizi belirlemeyen veriler i\u015flenir:',
+        privacyTeknikBilgi: 'Teknik Bilgiler:',
+        privacyTeknikAciklama: 'Taray\u0131c\u0131 t\u00fcr\u00fc, cihaz modeli gibi anonim teknik veriler.',
+        privacyYerelTercih: 'Yerel Tercihler:',
+        privacyYerelAciklama: 'Se\u00e7ti\u011finiz para birimleri veya tema ayarlar\u0131 gibi tercihler sadece sizin cihaz\u0131n\u0131zda saklan\u0131r.',
+        privacyBolum2Baslik: '2. \u00c7erezler ve Yerel Depolama (Local Storage)',
+        privacyBolum2Metin: 'Herhangi bir sunucu taraf\u0131 \u00e7erez (cookie) kullanm\u0131yoruz. Ancak, kullan\u0131c\u0131 deneyiminizi iyile\u015ftirmek i\u00e7in taray\u0131c\u0131n\u0131z\u0131n Local Storage \u00f6zelli\u011fini kullanabiliriz. Bu, son yapt\u0131\u011f\u0131n\u0131z hesaplamalar\u0131 veya tercihlerinizi hat\u0131rlamamizi sa\u011flar. Bu veriler cihaz\u0131n\u0131zdan \u00e7\u0131kmaz.',
+        privacyBolum3Baslik: '3. \u00dc\u00e7\u00fcnc\u00fc Taraf Hizmetler',
+        privacyBolum3Metin: 'Uygulamam\u0131z d\u00f6viz kurlar\u0131n\u0131 sa\u011flamak i\u00e7in d\u0131\u015f kaynakl\u0131 API servislerini (Avrupa Merkez Bankas\u0131, T.C. Merkez Bankas\u0131) kullan\u0131r. Bu servislerle ileti\u015fim kurulurken IP adresiniz gibi standart a\u011f bilgileri bu sa\u011flay\u0131c\u0131lar taraf\u0131ndan g\u00f6r\u00fclebilir.',
+        privacyBolum4Baslik: '4. G\u00fcvenlik',
+        privacyBolum4Metin: 'Ki\u015fisel veri toplamad\u0131\u011f\u0131m\u0131z i\u00e7in, verilerinizin \u00e7al\u0131nmas\u0131 veya s\u0131zd\u0131r\u0131lmas\u0131 riski minimumdur. Uygulama ile ilgili t\u00fcm ileti\u015fim HTTPS protokol\u00fc \u00fczerinden \u015fifreli olarak ger\u00e7ekle\u015fir.',
+        privacyBolum5Baslik: '5. \u0130leti\u015fim',
+        privacyBolum5Metin: 'Bu politika hakk\u0131nda sorular\u0131n\u0131z varsa, l\u00fctfen geli\u015ftirici ile ileti\u015fime ge\u00e7in:',
+        privacyGeriDon: 'Ana Sayfaya D\u00f6n',
+        privacyFooter: '\u00a9 2026 Pratikur. T\u00fcm haklar\u0131 sakl\u0131d\u0131r.'
     },
 
     en: {
@@ -146,7 +169,30 @@ const TRANSLATIONS = {
         gizlilikPolitikasi: 'Privacy Policy',
 
         // Title
-        pageTitle: 'Pratikur - Currency Rates & Rate Archive'
+        pageTitle: 'Pratikur - Currency Rates & Rate Archive',
+
+        // Privacy
+        privacyTitle: 'Privacy Policy',
+        privacyPageTitle: 'Privacy Policy - Pratikur',
+        privacySonGuncelleme: 'Last Updated:',
+        privacySonGuncellemeTarih: 'February 9, 2026',
+        privacyGiris: 'This privacy policy explains how your data is collected, used, and protected when using Pratikur.',
+        privacyBolum1Baslik: '1. Information Collected',
+        privacyBolum1Metin: 'Our app values user privacy and does not collect personal data. Only anonymous data necessary for app functionality is processed:',
+        privacyTeknikBilgi: 'Technical Information:',
+        privacyTeknikAciklama: 'Anonymous technical data such as browser type and device model.',
+        privacyYerelTercih: 'Local Preferences:',
+        privacyYerelAciklama: 'Preferences such as selected currencies or theme settings are stored only on your device.',
+        privacyBolum2Baslik: '2. Cookies and Local Storage',
+        privacyBolum2Metin: 'We do not use any server-side cookies. However, we may use your browser\'s Local Storage feature to improve your experience. This allows us to remember your recent calculations or preferences. This data never leaves your device.',
+        privacyBolum3Baslik: '3. Third-Party Services',
+        privacyBolum3Metin: 'Our app uses external API services (European Central Bank, Central Bank of Turkey) to provide exchange rates. When communicating with these services, standard network information such as your IP address may be visible to these providers.',
+        privacyBolum4Baslik: '4. Security',
+        privacyBolum4Metin: 'Since we do not collect personal data, the risk of your data being stolen or leaked is minimal. All communication with the app occurs encrypted over the HTTPS protocol.',
+        privacyBolum5Baslik: '5. Contact',
+        privacyBolum5Metin: 'If you have questions about this policy, please contact the developer:',
+        privacyGeriDon: 'Back to Home',
+        privacyFooter: '\u00a9 2026 Pratikur. All rights reserved.'
     }
 };
 
@@ -168,7 +214,9 @@ function translatePage() {
         el.placeholder = t(key);
     });
 
-    document.title = t('pageTitle');
+    // Sayfa basligini data-i18n-title'dan al
+    const titleKey = document.documentElement.getAttribute('data-i18n-title');
+    if (titleKey) document.title = t(titleKey);
     document.documentElement.lang = currentLang;
 }
 
@@ -179,7 +227,7 @@ function setDil(lang) {
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
     translatePage();
 
-    // Dinamik icerikleri yeniden olustur
-    kurListesiGuncelle();
-    guncelKurlariGuncelle();
+    // Dinamik icerikleri yeniden olustur (sadece ana sayfada)
+    if (typeof kurListesiGuncelle === 'function') kurListesiGuncelle();
+    if (typeof guncelKurlariGuncelle === 'function') guncelKurlariGuncelle();
 }
