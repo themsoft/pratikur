@@ -404,6 +404,20 @@ function gecmisExcelIndir() {
 // UI
 // =============================================
 
+function kurListesiFiltrele(aranan) {
+    const rows = document.querySelectorAll('#kurListesiBody tr');
+    const q = aranan.toLowerCase().trim();
+
+    rows.forEach(row => {
+        if (!q) {
+            row.classList.remove('hidden');
+            return;
+        }
+        const text = row.textContent.toLowerCase();
+        row.classList.toggle('hidden', !text.includes(q));
+    });
+}
+
 function tabDegistir(id, btn) {
     document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -423,6 +437,11 @@ window.onload = async function () {
     // Enter tusu ile hesaplama
     document.getElementById('calcAmount').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') ozelHesapla();
+    });
+
+    // Kur listesi arama
+    document.getElementById('kurArama').addEventListener('input', function () {
+        kurListesiFiltrele(this.value);
     });
 
     // Kayitli hesaplama gecmisini yukle
