@@ -7,6 +7,7 @@ let tumParaBirimleri = {};
 let sonGelenVeri = null;
 let sonGecmisVeri = null;
 let currentDirection = 'duz';
+let currentKaynak = localStorage.getItem('pratikur_kaynak') || 'ecb';
 let deferredPrompt;
 
 // =============================================
@@ -100,11 +101,61 @@ async function paraBirimleriniGetir() {
 // Tab 1 - Kur Listesi
 // =============================================
 
+function setKaynak(kaynak) {
+    currentKaynak = kaynak;
+    localStorage.setItem('pratikur_kaynak', kaynak);
+    document.getElementById('btnEcb').classList.toggle('active', kaynak === 'ecb');
+    document.getElementById('btnTcmb').classList.toggle('active', kaynak === 'tcmb');
+
+    // ECB kontrolleri (para birimi secici) goster/gizle
+    document.getElementById('ecbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
+
+    // Tablo basligini guncelle
+    const thead = document.querySelector('#kurTablosu thead tr');
+    thead.textContent = '';
+    if (kaynak === 'tcmb') {
+        ['Para Birimi', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
+    } else {
+        const th1 = document.createElement('th');
+        th1.textContent = 'Para Birimi';
+        const th2 = document.createElement('th');
+        th2.id = 'tabloBaslikDeger';
+        th2.textContent = 'De\u011fer';
+        thead.appendChild(th1);
+        thead.appendChild(th2);
+    }
+
+    // Guncel kur ve tablo guncelle
+    guncelKurlariGuncelle();
+    kurListesiGuncelle();
+}
+
+function guncelKurlariGuncelle() {
+    if (currentKaynak === 'tcmb') {
+        tcmbGuncelKurlariGoster();
+    } else {
+        guncelKurlariGoster();
+        document.getElementById('guncelKurKaynak').textContent = 'Avrupa Merkez Bankas\u0131 - G\u00fcnl\u00fck Kapan\u0131\u015f';
+    }
+}
+
+function kurListesiGuncelle() {
+    if (currentKaynak === 'tcmb') {
+        tcmbTablosuGuncelle();
+    } else {
+        tabloyuGuncelle();
+    }
+}
+
 function setDirection(dir) {
     currentDirection = dir;
     document.getElementById('btnDuz').classList.toggle('active', dir === 'duz');
     document.getElementById('btnTers').classList.toggle('active', dir === 'ters');
-    tabloyuGuncelle();
+    kurListesiGuncelle();
 }
 
 function tabloyuGuncelle() {
@@ -365,7 +416,28 @@ function excelIndir() {
 }
 
 function gecmisExcelIndir() {
-    if (!sonGecmisVeri || !sonGecmisVeri.rates) {
+    if (!sonGecmisVeri) {
+        alert('\u00d6nce kur verilerini getirmelisiniz.');
+        return;
+    }
+
+    // TCMB gecmis verisi
+    if (sonGecmisVeri.tcmb) {
+        if (!sonGecmisVeri.results || sonGecmisVeri.results.length === 0) {
+            alert('\u0130ndirilecek veri yok.');
+            return;
+        }
+        let csv = `data:text/csv;charset=utf-8,\uFEFFTarih;Alis;Satis\n`;
+        sonGecmisVeri.results.forEach(item => {
+            const formattedDate = new Date(item.date).toLocaleDateString('tr-TR');
+            csv += `${formattedDate};${String(item.buying.toFixed(4)).replace('.', ',')};${String(item.selling.toFixed(4)).replace('.', ',')}\n`;
+        });
+        csvIndir(`kur_arsivi_TCMB_${sonGecmisVeri.target}.csv`, csv);
+        return;
+    }
+
+    // ECB gecmis verisi
+    if (!sonGecmisVeri.rates) {
         alert('\u00d6nce kur verilerini getirmelisiniz.');
         return;
     }
@@ -395,6 +467,41 @@ function gecmisExcelIndir() {
 // UI
 // =============================================
 
+let histKaynak = 'ecb';
+
+function setHistKaynak(kaynak) {
+    histKaynak = kaynak;
+    document.getElementById('btnHistEcb').classList.toggle('active', kaynak === 'ecb');
+    document.getElementById('btnHistTcmb').classList.toggle('active', kaynak === 'tcmb');
+    document.getElementById('histEcbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
+    document.getElementById('histTcmbKontroller').classList.toggle('hidden', kaynak === 'ecb');
+
+    // Tablo basligini sifirla
+    const thead = document.querySelector('#historyTable thead tr');
+    thead.textContent = '';
+    if (kaynak === 'tcmb') {
+        ['Tarih', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
+    } else {
+        ['Tarih', 'Kur De\u011feri'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            thead.appendChild(th);
+        });
+    }
+}
+
+function gecmisKurlariGetirRouter() {
+    if (histKaynak === 'tcmb') {
+        tcmbGecmisKurlariGetir();
+    } else {
+        gecmisKurlariGetir();
+    }
+}
+
 function kurListesiFiltrele(aranan) {
     const rows = document.querySelectorAll('#kurListesiBody tr');
     const q = aranan.toLowerCase().trim();
@@ -421,9 +528,11 @@ function tabDegistir(id, btn) {
 // =============================================
 
 window.onload = async function () {
-    guncelKurlariGoster();
     await paraBirimleriniGetir();
-    tabloyuGuncelle();
+    tcmbParaBirimleriniDoldur();
+
+    // Kaynak tercihini uygula
+    setKaynak(currentKaynak);
 
     // Enter tusu ile hesaplama
     document.getElementById('calcAmount').addEventListener('keydown', function (e) {

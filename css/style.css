@@ -451,6 +451,17 @@ tbody tr:nth-child(even) {
     color: red;
 }
 
+/* === Progress === */
+.progress-text {
+    text-align: center;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 0.85em;
+    color: #1971c2;
+    background: #e7f5ff;
+    border-radius: 6px;
+}
+
 /* === Arama === */
 .search-input {
     width: 100%;
