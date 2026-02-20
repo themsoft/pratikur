@@ -31,11 +31,17 @@
 <body>
 
     <div class="container">
-        <button id="installBtn" class="hidden" onclick="uygulamayiYukle()"><i class="fas fa-download"></i> Uygulamayı Yükle</button>
+        <button id="installBtn" class="hidden" onclick="uygulamayiYukle()"><i class="fas fa-download"></i> <span data-i18n="uygulamaYukle">Uygulamayı Yükle</span></button>
+
+        <!-- Dil Secici -->
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btnTr" onclick="setDil('tr')">TR</button>
+            <button class="lang-btn" id="btnEn" onclick="setDil('en')">EN</button>
+        </div>
 
         <!-- Güncel Kur -->
         <div class="current-rate-container">
-            <div class="current-rate-header">Güncel Kur</div>
+            <div class="current-rate-header" data-i18n="guncelKur">Güncel Kur</div>
             <div class="current-rate-row">
                 <div class="current-rate-item">
                     <span class="current-rate-label">USD/TRY</span>
@@ -47,14 +53,14 @@
                     <span class="current-rate-value" id="guncelEur">--</span>
                 </div>
             </div>
-            <div class="current-rate-source" id="guncelKurKaynak">Avrupa Merkez Bankası - Günlük Kapanış</div>
+            <div class="current-rate-source" id="guncelKurKaynak" data-i18n="ecbKaynak">Avrupa Merkez Bankası - Günlük Kapanış</div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="tabDegistir('tab1', this)"><i class="fas fa-list"></i> Liste</button>
-            <button class="tab-btn" onclick="tabDegistir('tab2', this)"><i class="fas fa-calculator"></i> Çevirici</button>
-            <button class="tab-btn" onclick="tabDegistir('tab3', this)"><i class="fas fa-history"></i> Kur Arşivi</button>
+            <button class="tab-btn active" onclick="tabDegistir('tab1', this)"><i class="fas fa-list"></i> <span data-i18n="tabListe">Liste</span></button>
+            <button class="tab-btn" onclick="tabDegistir('tab2', this)"><i class="fas fa-calculator"></i> <span data-i18n="tabCevirici">Çevirici</span></button>
+            <button class="tab-btn" onclick="tabDegistir('tab3', this)"><i class="fas fa-history"></i> <span data-i18n="tabArsiv">Kur Arşivi</span></button>
         </div>
 
         <!-- Tab 1: Kur Listesi -->
@@ -69,7 +75,7 @@
             </div>
 
             <div id="ecbKontroller">
-                <label class="currency-label">Para Birimi:</label>
+                <label class="currency-label" data-i18n="paraBirimi">Para Birimi:</label>
                 <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
                     <option value="TRY" selected>TRY - Türk Lirası</option>
                 </select>
@@ -77,24 +83,24 @@
 
             <div class="kontrol-paneli">
                 <div class="direction-toggle">
-                    <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')">Ana -> Yabancı</button>
-                    <button class="direction-btn" id="btnTers" onclick="setDirection('ters')">Yabancı -> Ana</button>
+                    <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')" data-i18n="anaYabanci">Ana -> Yabancı</button>
+                    <button class="direction-btn" id="btnTers" onclick="setDirection('ters')" data-i18n="yabanciAna">Yabancı -> Ana</button>
                 </div>
-                <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> Excel İndir</button>
+                <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> <span data-i18n="excelIndir">Excel İndir</span></button>
             </div>
 
-            <input type="text" id="kurArama" placeholder="Para birimi ara... (ör: USD, Euro)" class="search-input">
+            <input type="text" id="kurArama" data-i18n-placeholder="aramaPlaceholder" placeholder="Para birimi ara... (ör: USD, Euro)" class="search-input">
 
             <div class="table-container">
                 <table id="kurTablosu">
                     <thead>
                         <tr>
-                            <th>Para Birimi</th>
-                            <th id="tabloBaslikDeger">Değer</th>
+                            <th data-i18n="thParaBirimi">Para Birimi</th>
+                            <th id="tabloBaslikDeger" data-i18n="thDeger">Değer</th>
                         </tr>
                     </thead>
                     <tbody id="kurListesiBody">
-                        <tr><td colspan="2" align="center">Yükleniyor...</td></tr>
+                        <tr><td colspan="2" align="center" data-i18n="yukleniyor">Yükleniyor...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -102,35 +108,35 @@
 
         <!-- Tab 2: Çevirici -->
         <div id="tab2" class="content">
-            <h2>Hızlı Çevirici</h2>
-            <label>Miktar:</label>
+            <h2 data-i18n="hizliCevirici">Hızlı Çevirici</h2>
+            <label data-i18n="miktar">Miktar:</label>
             <input type="number" id="calcAmount" placeholder="100" value="100">
 
             <div class="swap-container">
                 <div class="flex-item">
-                    <label>Buradan:</label>
+                    <label data-i18n="buradan">Buradan:</label>
                     <select id="calcFrom"><option value="USD">USD</option></select>
                 </div>
                 <button class="swap-btn" onclick="swapCurrencies()"><i class="fas fa-exchange-alt"></i></button>
                 <div class="flex-item">
-                    <label>Buraya:</label>
+                    <label data-i18n="buraya">Buraya:</label>
                     <select id="calcTo"><option value="TRY" selected>TRY</option></select>
                 </div>
             </div>
 
-            <button class="btn btn-green" onclick="ozelHesapla()">HESAPLA</button>
-            <div class="sonuc-kutusu" id="calcResult">Hesaplamak için butona basın</div>
+            <button class="btn btn-green" onclick="ozelHesapla()" data-i18n="hesapla">HESAPLA</button>
+            <div class="sonuc-kutusu" id="calcResult" data-i18n="hesaplamakIcin">Hesaplamak için butona basın</div>
 
             <div class="history-section">
-                <span class="history-title">Son Hesaplamalar</span>
+                <span class="history-title" data-i18n="sonHesaplamalar">Son Hesaplamalar</span>
                 <ul id="historyList" class="history-list"></ul>
             </div>
-            <div class="disclaimer-small">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
+            <div class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
         </div>
 
         <!-- Tab 3: Kur Arşivi -->
         <div id="tab3" class="content">
-            <h2>Geçmiş Kurlar</h2>
+            <h2 data-i18n="gecmisKurlar">Geçmiş Kurlar</h2>
 
             <div class="history-controls">
                 <div class="direction-toggle" style="margin-bottom:10px">
@@ -140,28 +146,28 @@
 
                 <div class="date-group">
                     <div>
-                        <label>Başlangıç:</label>
+                        <label data-i18n="baslangic">Başlangıç:</label>
                         <input type="date" id="histStartDate">
                     </div>
                     <div>
-                        <label>Bitiş:</label>
+                        <label data-i18n="bitis">Bitiş:</label>
                         <input type="date" id="histEndDate">
                     </div>
                 </div>
 
                 <div id="histEcbKontroller" class="swap-container swap-container--spaced">
                     <div class="flex-item">
-                        <label>Ana Para:</label>
+                        <label data-i18n="anaPara">Ana Para:</label>
                         <select id="histBase"><option value="USD">USD</option></select>
                     </div>
                     <div class="flex-item flex-item--spaced">
-                        <label>Hedef Para:</label>
+                        <label data-i18n="hedefPara">Hedef Para:</label>
                         <select id="histTarget"><option value="TRY" selected>TRY</option></select>
                     </div>
                 </div>
 
                 <div id="histTcmbKontroller" class="hidden">
-                    <label class="currency-label">Para Birimi:</label>
+                    <label class="currency-label" data-i18n="paraBirimi">Para Birimi:</label>
                     <select id="histTcmbTarget">
                         <option value="USD" selected>USD</option>
                     </select>
@@ -170,8 +176,8 @@
                 <div id="histProgress" class="hidden progress-text"></div>
 
                 <div class="button-row">
-                    <button class="btn btn-green btn--flush" onclick="gecmisKurlariGetirRouter()">KURLARI GETİR</button>
-                    <button class="btn btn-csv btn--flush" onclick="gecmisExcelIndir()"><i class="fas fa-file-csv"></i> Excel İndir</button>
+                    <button class="btn btn-green btn--flush" onclick="gecmisKurlariGetirRouter()" data-i18n="kurlariGetir">KURLARI GETİR</button>
+                    <button class="btn btn-csv btn--flush" onclick="gecmisExcelIndir()"><i class="fas fa-file-csv"></i> <span data-i18n="excelIndir">Excel İndir</span></button>
                 </div>
             </div>
 
@@ -179,23 +185,24 @@
                 <table id="historyTable">
                     <thead>
                         <tr>
-                            <th>Tarih</th>
-                            <th>Kur Değeri</th>
+                            <th data-i18n="thTarih">Tarih</th>
+                            <th data-i18n="thKurDegeri">Kur Değeri</th>
                         </tr>
                     </thead>
                     <tbody id="historyBody">
-                        <tr><td colspan="2" align="center">Tarih aralığı seçip butona basın.</td></tr>
+                        <tr><td colspan="2" align="center" data-i18n="tarihAraligi">Tarih aralığı seçip butona basın.</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div class="footer-links">
-            <a href="privacy.html">Gizlilik Politikası</a>
+            <a href="privacy.html" data-i18n="gizlilikPolitikasi">Gizlilik Politikası</a>
         </div>
     </div>
 
     <script src="js/utils.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/tcmb.js"></script>
     <script src="js/app.js"></script>
 </body>

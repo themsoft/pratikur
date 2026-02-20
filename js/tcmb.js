@@ -43,8 +43,8 @@ function tcmbGuncelKurlariGoster() {
             if (data.rates.EUR) {
                 document.getElementById('guncelEur').textContent = data.rates.EUR.selling.toFixed(4);
             }
-            document.getElementById('guncelKurKaynak').textContent =
-                'T.C. Merkez Bankasi - ' + (data.date || 'Guncel');
+            const tarihStr = data.date ? new Date(data.date).toLocaleDateString(currentLang === 'tr' ? 'tr-TR' : 'en-US') : '';
+            document.getElementById('guncelKurKaynak').textContent = t('tcmbKuru') + (tarihStr ? ' - ' + tarihStr : '');
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
@@ -59,8 +59,8 @@ async function tcmbGecmisKurlariGetir() {
     const tbody = document.getElementById('historyBody');
     const progress = document.getElementById('histProgress');
 
-    if (!start || !end) { alert('L\u00fctfen tarih araligi secin.'); return; }
-    if (start > end) { alert('Baslangic tarihi bitis tarihinden buyuk olamaz.'); return; }
+    if (!start || !end) { alert(t('tarihSecin')); return; }
+    if (start > end) { alert(t('tarihHata')); return; }
 
     // Tarih listesi olustur (is gunleri)
     const dates = [];
@@ -76,7 +76,7 @@ async function tcmbGecmisKurlariGetir() {
 
     tbody.textContent = '';
     progress.classList.remove('hidden');
-    progress.textContent = '0/' + dates.length + ' g\u00fcn y\u00fckleniyor...';
+    progress.textContent = '0/' + dates.length + t('gunYukleniyor');
 
     const results = [];
     let loaded = 0;
@@ -102,7 +102,7 @@ async function tcmbGecmisKurlariGetir() {
                 // Hafta sonu/tatil 404 -> atla
             }
             loaded++;
-            progress.textContent = loaded + '/' + dates.length + ' g\u00fcn y\u00fckleniyor...';
+            progress.textContent = loaded + '/' + dates.length + t('gunYukleniyor');
         });
         await Promise.all(promises);
     }
@@ -115,7 +115,7 @@ async function tcmbGecmisKurlariGetir() {
         const emptyCell = document.createElement('td');
         emptyCell.colSpan = 3;
         emptyCell.align = 'center';
-        emptyCell.textContent = 'Bu tarih araligi icin TCMB verisi bulunamadi.';
+        emptyCell.textContent = t('tcmbVeriBulunamadi');
         emptyRow.appendChild(emptyCell);
         tbody.appendChild(emptyRow);
         return;
@@ -165,7 +165,7 @@ function tcmbTablosuGuncelle() {
     const loadingCell = document.createElement('td');
     loadingCell.colSpan = 3;
     loadingCell.align = 'center';
-    loadingCell.textContent = '\u23f3 G\u00fcncelleniyor...';
+    loadingCell.textContent = t('guncelleniyor');
     loadingRow.appendChild(loadingCell);
     tbody.appendChild(loadingRow);
 
@@ -179,9 +179,9 @@ function tcmbTablosuGuncelle() {
                 const icon = document.createElement('i');
                 icon.className = 'fas fa-info-circle';
                 zamanBox.appendChild(icon);
-                zamanBox.appendChild(document.createTextNode(' T.C. Merkez Bankas\u0131 Kuru '));
+                zamanBox.appendChild(document.createTextNode(' ' + t('tcmbKuru') + ' '));
                 const bold = document.createElement('b');
-                bold.textContent = '(Al\u0131\u015f/Sat\u0131\u015f)';
+                bold.textContent = t('tcmbAlisSatis');
                 zamanBox.appendChild(bold);
                 zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
             }
@@ -224,7 +224,7 @@ function tcmbTablosuGuncelle() {
             errCell.colSpan = 3;
             errCell.align = 'center';
             errCell.className = 'error-text';
-            errCell.textContent = 'TCMB verileri y\u00fcklenemedi.';
+            errCell.textContent = t('tcmbVerilerYuklenemedi');
             errRow.appendChild(errCell);
             tbody.appendChild(errRow);
         });

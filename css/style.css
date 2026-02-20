@@ -22,6 +22,34 @@ body {
     position: relative;
 }
 
+/* === Dil Secici === */
+.lang-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 2px;
+    z-index: 20;
+}
+
+.lang-btn {
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: #888;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.lang-btn.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
 /* === Güncel Kur === */
 .current-rate-container {
     background: #f8f9fa;
