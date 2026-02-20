@@ -413,4 +413,9 @@ window.onload = async function () {
     guncelKurlariGoster();
     await paraBirimleriniGetir();
     tabloyuGuncelle();
+
+    // Enter tusu ile hesaplama
+    document.getElementById('calcAmount').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') ozelHesapla();
+    });
 };
