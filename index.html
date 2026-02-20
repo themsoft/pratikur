@@ -31,12 +31,16 @@
 <body>
 
     <div class="container">
-        <button id="installBtn" class="hidden" onclick="uygulamayiYukle()"><i class="fas fa-download"></i> <span data-i18n="uygulamaYukle">Uygulamayı Yükle</span></button>
-
-        <!-- Dil Secici -->
-        <div class="lang-toggle">
-            <button class="lang-btn active" id="btnTr" onclick="setDil('tr')">TR</button>
-            <button class="lang-btn" id="btnEn" onclick="setDil('en')">EN</button>
+        <!-- Header Bar -->
+        <div class="app-header">
+            <span class="app-brand">Pratikur</span>
+            <div class="app-header-actions">
+                <button id="installBtn" class="header-icon-btn hidden" onclick="uygulamayiYukle()" title="Uygulamayı Yükle"><i class="fas fa-download"></i></button>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" id="btnTr" onclick="setDil('tr')">TR</button>
+                    <button class="lang-btn" id="btnEn" onclick="setDil('en')">EN</button>
+                </div>
+            </div>
         </div>
 
         <!-- Güncel Kur -->

@@ -22,18 +22,58 @@ body {
     position: relative;
 }
 
+/* === Header Bar === */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.app-brand {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: -0.5px;
+}
+
+.app-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-icon-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #555;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.header-icon-btn:hover {
+    background: #f0f7ff;
+    color: #007bff;
+    border-color: #007bff;
+}
+
 /* === Dil Secici === */
 .lang-toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     display: flex;
     gap: 2px;
-    z-index: 20;
 }
 
 .lang-btn {
-    padding: 4px 10px;
+    padding: 5px 10px;
     border: 1px solid #ddd;
     background: #fff;
     cursor: pointer;
@@ -259,16 +299,7 @@ input[type="date"] {
     transform: translateY(-1px);
 }
 
-#installBtn {
-    background: #333;
-    color: white;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    cursor: pointer;
-    border: none;
-}
+/* installBtn artik header-icon-btn ile stillendirilir */
 
 /* === Table === */
 .table-container {
