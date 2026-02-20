@@ -7,6 +7,7 @@ let tumParaBirimleri = {};
 let sonGelenVeri = null;
 let sonGecmisVeri = null;
 let currentDirection = 'duz';
+let currentKaynak = localStorage.getItem('pratikur_kaynak') || 'ecb';
 let deferredPrompt;
 
 // =============================================
@@ -100,11 +101,50 @@ async function paraBirimleriniGetir() {
 // Tab 1 - Kur Listesi
 // =============================================
 
+function setKaynak(kaynak) {
+    currentKaynak = kaynak;
+    localStorage.setItem('pratikur_kaynak', kaynak);
+    document.getElementById('btnEcb').classList.toggle('active', kaynak === 'ecb');
+    document.getElementById('btnTcmb').classList.toggle('active', kaynak === 'tcmb');
+
+    // ECB kontrolleri (para birimi secici) goster/gizle
+    document.getElementById('ecbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
+
+    // Tablo basligini guncelle
+    const thead = document.querySelector('#kurTablosu thead tr');
+    if (kaynak === 'tcmb') {
+        thead.innerHTML = '<th>Para Birimi</th><th>Al\u0131\u015f</th><th>Sat\u0131\u015f</th>';
+    } else {
+        thead.innerHTML = '<th>Para Birimi</th><th id="tabloBaslikDeger">De\u011fer</th>';
+    }
+
+    // Guncel kur ve tablo guncelle
+    guncelKurlariGuncelle();
+    kurListesiGuncelle();
+}
+
+function guncelKurlariGuncelle() {
+    if (currentKaynak === 'tcmb') {
+        tcmbGuncelKurlariGoster();
+    } else {
+        guncelKurlariGoster();
+        document.getElementById('guncelKurKaynak').textContent = 'Avrupa Merkez Bankas\u0131 - G\u00fcnl\u00fck Kapan\u0131\u015f';
+    }
+}
+
+function kurListesiGuncelle() {
+    if (currentKaynak === 'tcmb') {
+        tcmbTablosuGuncelle();
+    } else {
+        tabloyuGuncelle();
+    }
+}
+
 function setDirection(dir) {
     currentDirection = dir;
     document.getElementById('btnDuz').classList.toggle('active', dir === 'duz');
     document.getElementById('btnTers').classList.toggle('active', dir === 'ters');
-    tabloyuGuncelle();
+    kurListesiGuncelle();
 }
 
 function tabloyuGuncelle() {
@@ -421,9 +461,10 @@ function tabDegistir(id, btn) {
 // =============================================
 
 window.onload = async function () {
-    guncelKurlariGoster();
     await paraBirimleriniGetir();
-    tabloyuGuncelle();
+
+    // Kaynak tercihini uygula
+    setKaynak(currentKaynak);
 
     // Enter tusu ile hesaplama
     document.getElementById('calcAmount').addEventListener('keydown', function (e) {

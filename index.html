@@ -60,10 +60,20 @@
         <!-- Tab 1: Kur Listesi -->
         <div id="tab1" class="content active">
             <div id="zamanGosterge" class="zaman-bilgisi"></div>
-            <label class="currency-label">Para Birimi:</label>
-            <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
-                <option value="TRY" selected>TRY - Türk Lirası</option>
-            </select>
+
+            <div class="kontrol-paneli">
+                <div class="direction-toggle">
+                    <button class="direction-btn active" id="btnEcb" onclick="setKaynak('ecb')">ECB</button>
+                    <button class="direction-btn" id="btnTcmb" onclick="setKaynak('tcmb')">TCMB</button>
+                </div>
+            </div>
+
+            <div id="ecbKontroller">
+                <label class="currency-label">Para Birimi:</label>
+                <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
+                    <option value="TRY" selected>TRY - Türk Lirası</option>
+                </select>
+            </div>
 
             <div class="kontrol-paneli">
                 <div class="direction-toggle">
@@ -172,6 +182,7 @@
     </div>
 
     <script src="js/utils.js"></script>
+    <script src="js/tcmb.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
