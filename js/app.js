@@ -42,8 +42,7 @@ function uygulamayiYukle() {
 // =============================================
 
 function guncelKurlariGoster() {
-    fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
-        .then(res => res.json())
+    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
         .then(data => {
             document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
         })
@@ -51,8 +50,7 @@ function guncelKurlariGoster() {
             document.getElementById('guncelUsd').textContent = '--';
         });
 
-    fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
-        .then(res => res.json())
+    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
         .then(data => {
             document.getElementById('guncelEur').textContent = data.rates.TRY.toFixed(4);
         })
@@ -67,8 +65,7 @@ function guncelKurlariGoster() {
 
 async function paraBirimleriniGetir() {
     try {
-        const response = await fetch('https://api.frankfurter.dev/v1/currencies');
-        tumParaBirimleri = await response.json();
+        tumParaBirimleri = await fetchWithRetry('https://api.frankfurter.dev/v1/currencies');
 
         const selectIds = ['baseCurrencySelect', 'calcFrom', 'calcTo', 'histBase', 'histTarget'];
         selectIds.forEach(id => {
@@ -129,8 +126,7 @@ function tabloyuGuncelle() {
     loadingRow.appendChild(loadingCell);
     tbody.appendChild(loadingRow);
 
-    fetch(`https://api.frankfurter.dev/v1/latest?base=${base}`)
-        .then(res => res.json())
+    fetchWithRetry(`https://api.frankfurter.dev/v1/latest?base=${base}`)
         .then(data => {
             sonGelenVeri = data;
             tbody.textContent = '';
@@ -223,8 +219,7 @@ function ozelHesapla() {
     resBox.appendChild(spinner);
     resBox.appendChild(document.createTextNode(' Hesaplaniyor...'));
 
-    fetch(`https://api.frankfurter.dev/v1/latest?amount=${amt}&from=${from}&to=${to}`)
-        .then(r => r.json())
+    fetchWithRetry(`https://api.frankfurter.dev/v1/latest?amount=${amt}&from=${from}&to=${to}`)
         .then(d => {
             const formatted = new Intl.NumberFormat('tr-TR', {
                 style: 'currency',
@@ -303,11 +298,7 @@ function gecmisKurlariGetir() {
     loadRow.appendChild(loadCell);
     tbody.appendChild(loadRow);
 
-    fetch(`https://api.frankfurter.dev/v1/${start}..${end}?from=${base}&to=${target}`)
-        .then(res => {
-            if (!res.ok) throw new Error('Veri alinamadi');
-            return res.json();
-        })
+    fetchWithRetry(`https://api.frankfurter.dev/v1/${start}..${end}?from=${base}&to=${target}`)
         .then(data => {
             sonGecmisVeri = data;
             tbody.textContent = '';
