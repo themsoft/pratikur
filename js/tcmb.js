@@ -55,6 +55,7 @@ function tcmbGuncelKurlariGoster() {
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
             document.getElementById('guncelEur').textContent = '--';
+            kaynakBilgisiniGuncelle('tcmb', null);
         });
 }
 
@@ -130,10 +131,11 @@ async function tcmbGecmisKurlariGetir() {
     // Tarihe gore sirala (yeniden eskiye)
     results.sort((a, b) => b.date.localeCompare(a.date));
 
-    // Tablo basligini guncelle
+    // Tablo basligini guncelle (para birimi cifti ile)
+    const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
     const thead = document.querySelector('#historyTable thead tr');
     thead.textContent = '';
-    [t('thTarih'), t('thAlis'), t('thSatis')].forEach(text => {
+    [t('thTarih'), `${target}/TRY ${t('thAlis')}`, `${target}/TRY ${t('thSatis')}`].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         thead.appendChild(th);
@@ -142,11 +144,22 @@ async function tcmbGecmisKurlariGetir() {
     results.forEach(item => {
         const tr = document.createElement('tr');
         const tdDate = document.createElement('td');
-        tdDate.textContent = new Date(item.date).toLocaleDateString('tr-TR');
+        tdDate.textContent = new Date(item.date).toLocaleDateString(locale);
+
         const tdBuy = document.createElement('td');
-        tdBuy.textContent = item.buying.toFixed(4);
+        tdBuy.appendChild(document.createTextNode(`1 ${target} = `));
+        const buyBold = document.createElement('b');
+        buyBold.textContent = item.buying.toFixed(4);
+        tdBuy.appendChild(buyBold);
+        tdBuy.appendChild(document.createTextNode(' TRY'));
+
         const tdSell = document.createElement('td');
-        tdSell.textContent = item.selling.toFixed(4);
+        tdSell.appendChild(document.createTextNode(`1 ${target} = `));
+        const sellBold = document.createElement('b');
+        sellBold.textContent = item.selling.toFixed(4);
+        tdSell.appendChild(sellBold);
+        tdSell.appendChild(document.createTextNode(' TRY'));
+
         tr.appendChild(tdDate);
         tr.appendChild(tdBuy);
         tr.appendChild(tdSell);

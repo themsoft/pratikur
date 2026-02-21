@@ -78,6 +78,7 @@ function guncelKurlariGoster() {
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
+            kaynakBilgisiniGuncelle('ecb', null);
         });
 
     fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
@@ -425,10 +426,11 @@ function gecmisKurlariGetir() {
                 return;
             }
 
+            const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
             const dates = Object.keys(data.rates).sort().reverse();
             dates.forEach(date => {
                 const rate = data.rates[date][target];
-                const formattedDate = new Date(date).toLocaleDateString('tr-TR');
+                const formattedDate = new Date(date).toLocaleDateString(locale);
 
                 const tr = document.createElement('tr');
                 const tdDate = document.createElement('td');
@@ -552,6 +554,20 @@ function setHistKaynak(kaynak) {
             thead.appendChild(th);
         });
     }
+
+    // Tablo icerigini sifirla
+    const tbody = document.getElementById('historyBody');
+    tbody.textContent = '';
+    const msgRow = document.createElement('tr');
+    const msgCell = document.createElement('td');
+    msgCell.colSpan = kaynak === 'tcmb' ? 3 : 2;
+    msgCell.style.textAlign = 'center';
+    msgCell.textContent = t('tarihAraligi');
+    msgRow.appendChild(msgCell);
+    tbody.appendChild(msgRow);
+
+    // Eski CSV verisini temizle
+    sonGecmisVeri = null;
 }
 
 function gecmisKurlariGetirRouter() {
