@@ -133,7 +133,7 @@
                 <span class="history-title" data-i18n="sonHesaplamalar">Son Hesaplamalar</span>
                 <ul id="historyList" class="history-list"></ul>
             </div>
-            <div class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
+            <div id="calcDisclaimer" class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
         </div>
 
         <!-- Tab 3: Kur Arşivi -->
@@ -141,11 +141,6 @@
             <h2 data-i18n="gecmisKurlar">Geçmiş Kurlar</h2>
 
             <div class="history-controls">
-                <div class="direction-toggle" style="margin-bottom:10px">
-                    <button class="direction-btn active" id="btnHistEcb" onclick="setHistKaynak('ecb')">ECB</button>
-                    <button class="direction-btn" id="btnHistTcmb" onclick="setHistKaynak('tcmb')">TCMB</button>
-                </div>
-
                 <div class="date-group">
                     <div>
                         <label for="histStartDate" data-i18n="baslangic">Başlangıç:</label>
@@ -215,15 +210,17 @@
                 </div>
 
                 <div class="swap-container swap-container--spaced">
-                    <div class="flex-item">
+                    <div class="flex-item" id="statBaseContainer">
                         <label for="statBase" data-i18n="anaPara">Ana Para:</label>
                         <select id="statBase"><option value="USD">USD</option></select>
                     </div>
-                    <div class="flex-item flex-item--spaced">
+                    <div class="flex-item flex-item--spaced" id="statTargetContainer">
                         <label for="statTarget" data-i18n="hedefPara">Hedef Para:</label>
                         <select id="statTarget"><option value="TRY" selected>TRY</option></select>
                     </div>
                 </div>
+
+                <div id="statTcmbUyari" class="hidden disclaimer-small" style="margin-top:0;margin-bottom:10px"></div>
 
                 <button class="btn btn-green btn--flush" onclick="istatistikHesapla()" data-i18n="istatistikHesapla">İSTATİSTİKLERİ HESAPLA</button>
             </div>
@@ -231,7 +228,7 @@
             <div id="statProgress" class="hidden progress-text"></div>
             <div id="statSonuclar" class="stat-container"></div>
 
-            <div class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
+            <div id="statDisclaimer" class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
         </div>
 
         <div class="footer-links">
