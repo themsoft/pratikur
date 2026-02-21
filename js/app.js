@@ -139,6 +139,41 @@ async function paraBirimleriniGetir() {
 // Tab 1 - Kur Listesi
 // =============================================
 
+function baseCurrencyDoldur(kaynak) {
+    const select = document.getElementById('baseCurrencySelect');
+    const onceki = select.value;
+    select.textContent = '';
+
+    if (kaynak === 'tcmb') {
+        // TRY'yi ilk secenek olarak ekle
+        const tryOpt = document.createElement('option');
+        tryOpt.value = 'TRY';
+        tryOpt.text = 'TRY - ' + (currentLang === 'en' ? 'Turkish Lira' : 'T\u00fcrk Liras\u0131');
+        select.appendChild(tryOpt);
+
+        // TCMB para birimlerini ekle
+        Object.entries(tcmbParaBirimleri).forEach(([code, info]) => {
+            const option = document.createElement('option');
+            option.value = code;
+            const name = (currentLang === 'en') ? (info.nameEn || info.nameTr) : info.nameTr;
+            option.text = `${code} - ${name}`;
+            select.appendChild(option);
+        });
+    } else {
+        // ECB para birimlerini ekle
+        Object.entries(tumParaBirimleri).forEach(([code, name]) => {
+            const option = document.createElement('option');
+            option.value = code;
+            option.text = `${code} - ${name}`;
+            select.appendChild(option);
+        });
+    }
+
+    // Onceki secimi koru, yoksa TRY
+    const mevcutMu = [...select.options].some(o => o.value === onceki);
+    select.value = mevcutMu ? onceki : 'TRY';
+}
+
 function setKaynak(kaynak) {
     currentKaynak = kaynak;
     localStorage.setItem('pratikur_kaynak', kaynak);
@@ -164,6 +199,9 @@ function setKaynak(kaynak) {
         thead.appendChild(th2);
     }
 
+    // Para birimi dropdown'unu guncelle
+    baseCurrencyDoldur(kaynak);
+
     // Guncel kur ve tablo guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
@@ -178,8 +216,9 @@ function guncelKurlariGuncelle() {
 }
 
 function kurListesiGuncelle() {
+    const base = document.getElementById('baseCurrencySelect').value;
     if (currentKaynak === 'tcmb') {
-        tcmbTablosuGuncelle();
+        tcmbTablosuGuncelle(base);
     } else {
         tabloyuGuncelle();
     }
@@ -556,7 +595,7 @@ window.onload = async function () {
     translatePage();
 
     await paraBirimleriniGetir();
-    tcmbParaBirimleriniDoldur();
+    await tcmbParaBirimleriniDoldur();
 
     // Kaynak tercihini uygula
     setKaynak(currentKaynak);
