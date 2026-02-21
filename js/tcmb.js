@@ -292,6 +292,80 @@ function tcmbTablosuGuncelle(base) {
 }
 
 // =============================================
+// Istatistik - TCMB
+// =============================================
+
+async function tcmbIstatistikHesapla() {
+    const target = document.getElementById('statTarget').value;
+    const start = document.getElementById('statStartDate').value;
+    const end = document.getElementById('statEndDate').value;
+    const container = document.getElementById('statSonuclar');
+    const progress = document.getElementById('statProgress');
+
+    if (!start || !end) { alert(t('tarihSecin')); return; }
+    if (start > end) { alert(t('tarihHata')); return; }
+
+    // Tarih listesi olustur (is gunleri)
+    const dates = [];
+    const d = new Date(start);
+    const endDate = new Date(end);
+    while (d <= endDate) {
+        const day = d.getDay();
+        if (day !== 0 && day !== 6) {
+            dates.push(d.toISOString().split('T')[0]);
+        }
+        d.setDate(d.getDate() + 1);
+    }
+
+    container.textContent = '';
+    progress.classList.remove('hidden');
+    progress.textContent = '0/' + dates.length + t('gunYukleniyor');
+
+    const ratesObj = {};
+    let loaded = 0;
+
+    // Paralel istek (max 5 concurrent)
+    const chunks = [];
+    for (let i = 0; i < dates.length; i += 5) {
+        chunks.push(dates.slice(i, i + 5));
+    }
+
+    for (const chunk of chunks) {
+        const promises = chunk.map(async (dateStr) => {
+            try {
+                const data = await tcmbGecmisKurGetir(dateStr);
+                if (data.rates && data.rates[target]) {
+                    // renderStats beklentisi: rates[date][target] = value
+                    ratesObj[data.date || dateStr] = {};
+                    ratesObj[data.date || dateStr]['TRY'] = data.rates[target].selling;
+                }
+            } catch (e) {
+                // Hafta sonu/tatil 404 -> atla
+            }
+            loaded++;
+            progress.textContent = loaded + '/' + dates.length + t('gunYukleniyor');
+        });
+        await Promise.all(promises);
+    }
+
+    progress.classList.add('hidden');
+
+    if (Object.keys(ratesObj).length === 0) {
+        container.textContent = t('statVeriBulunamadi');
+        return;
+    }
+
+    // TCMB notu ekle
+    const not = document.createElement('div');
+    not.className = 'disclaimer-small';
+    not.style.marginBottom = '10px';
+    not.textContent = t('tcmbStatNot');
+    container.appendChild(not);
+
+    renderStats(ratesObj, target, 'TRY');
+}
+
+// =============================================
 // Cevirici - TCMB Hesaplama
 // =============================================
 

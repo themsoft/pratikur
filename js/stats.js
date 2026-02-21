@@ -335,6 +335,11 @@ function formatMonthLabel(monthStr) {
 // --- Ana Fonksiyon ---
 
 async function istatistikHesapla() {
+    if (currentKaynak === 'tcmb') {
+        tcmbIstatistikHesapla();
+        return;
+    }
+
     var start = document.getElementById('statStartDate').value;
     var end = document.getElementById('statEndDate').value;
     var base = document.getElementById('statBase').value;
