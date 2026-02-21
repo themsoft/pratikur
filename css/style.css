@@ -139,11 +139,25 @@ body {
     background: #ddd;
 }
 
-.current-rate-source {
-    font-size: 0.7em;
-    color: #aaa;
-    margin-top: 8px;
-    font-style: italic;
+.source-toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.direction-toggle--compact {
+    max-width: 200px;
+}
+
+.current-rate-container .zaman-bilgisi {
+    margin-top: 10px;
+    margin-bottom: 0;
+    border-radius: 6px;
+    font-size: 0.78em;
+}
+
+.zaman-bilgisi:empty {
+    display: none;
 }
 
 /* === Tabs === */

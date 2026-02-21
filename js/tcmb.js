@@ -3,6 +3,7 @@
    ============================================ */
 
 const TCMB_PROXY = '/.netlify/functions/tcmb-proxy';
+let tcmbParaBirimleri = {};
 
 async function tcmbKurlariGetir() {
     const data = await fetchWithRetry(TCMB_PROXY);
@@ -20,12 +21,18 @@ async function tcmbGecmisKurGetir(dateStr) {
 async function tcmbParaBirimleriniDoldur() {
     try {
         const data = await tcmbKurlariGetir();
+        tcmbParaBirimleri = {};
         const select = document.getElementById('histTcmbTarget');
         select.textContent = '';
         Object.entries(data.rates).forEach(([code, info]) => {
+            tcmbParaBirimleri[code] = {
+                nameTr: info.nameTr || code,
+                nameEn: info.nameEn || info.nameTr || code
+            };
             const option = document.createElement('option');
             option.value = code;
-            option.text = `${code} - ${info.nameTr}`;
+            const name = (typeof currentLang !== 'undefined' && currentLang === 'en') ? (info.nameEn || info.nameTr) : info.nameTr;
+            option.text = `${code} - ${name}`;
             select.appendChild(option);
         });
         select.value = 'USD';
@@ -43,8 +50,7 @@ function tcmbGuncelKurlariGoster() {
             if (data.rates.EUR) {
                 document.getElementById('guncelEur').textContent = data.rates.EUR.selling.toFixed(4);
             }
-            const tarihStr = data.date ? new Date(data.date).toLocaleDateString(currentLang === 'tr' ? 'tr-TR' : 'en-US') : '';
-            document.getElementById('guncelKurKaynak').textContent = t('tcmbKuru') + (tarihStr ? ' - ' + tarihStr : '');
+            kaynakBilgisiniGuncelle('tcmb', data.date);
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
@@ -151,20 +157,15 @@ async function tcmbGecmisKurlariGetir() {
     sonGecmisVeri = { tcmb: true, target, results };
 }
 
-function tcmbTablosuGuncelle() {
+function tcmbTablosuGuncelle(base) {
+    base = base || 'TRY';
     const tbody = document.getElementById('kurListesiBody');
-    const baslik = document.getElementById('tabloBaslikDeger');
-    const zamanBox = document.getElementById('zamanGosterge');
-
-    baslik.innerText = currentDirection === 'duz'
-        ? '1 TRY Karsiligi'
-        : '1 Birimin TRY Karsiligi';
 
     tbody.textContent = '';
     const loadingRow = document.createElement('tr');
     const loadingCell = document.createElement('td');
     loadingCell.colSpan = 3;
-    loadingCell.align = 'center';
+    loadingCell.style.textAlign = 'center';
     loadingCell.textContent = t('guncelleniyor');
     loadingRow.appendChild(loadingCell);
     tbody.appendChild(loadingRow);
@@ -172,21 +173,18 @@ function tcmbTablosuGuncelle() {
     tcmbKurlariGetir()
         .then(data => {
             tbody.textContent = '';
+            const isCross = (base !== 'TRY');
+            const baseInfo = isCross ? data.rates[base] : null;
 
-            if (data.date) {
-                const tarih = new Date(data.date).toLocaleDateString('tr-TR');
-                zamanBox.textContent = '';
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-info-circle';
-                zamanBox.appendChild(icon);
-                zamanBox.appendChild(document.createTextNode(' ' + t('tcmbKuru') + ' '));
-                const bold = document.createElement('b');
-                bold.textContent = t('tcmbAlisSatis');
-                zamanBox.appendChild(bold);
-                zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
+            // Capraz kurda base para birimi bulunamazsa TRY'ye don
+            if (isCross && !baseInfo) {
+                base = 'TRY';
             }
 
             Object.entries(data.rates).forEach(([kod, info]) => {
+                // Base para birimini listeden cikar
+                if (kod === base) return;
+
                 const tr = document.createElement('tr');
 
                 const tdName = document.createElement('td');
@@ -196,25 +194,75 @@ function tcmbTablosuGuncelle() {
                 tdName.appendChild(document.createTextNode(' '));
                 const kodSpan = document.createElement('span');
                 kodSpan.className = 'currency-name-detail';
-                kodSpan.textContent = info.nameTr || '';
+                kodSpan.textContent = (currentLang === 'en' ? info.nameEn : info.nameTr) || '';
                 tdName.appendChild(kodSpan);
 
-                const tdBuying = document.createElement('td');
-                const tdSelling = document.createElement('td');
-
-                if (currentDirection === 'duz') {
-                    tdBuying.textContent = formatla(1 / info.buying);
-                    tdSelling.textContent = formatla(1 / info.selling);
+                let buyVal, sellVal;
+                if (base === 'TRY') {
+                    // TRY bazli: mevcut davranis
+                    if (currentDirection === 'duz') {
+                        buyVal = 1 / info.buying;
+                        sellVal = 1 / info.selling;
+                    } else {
+                        buyVal = info.buying;
+                        sellVal = info.selling;
+                    }
                 } else {
-                    tdBuying.textContent = formatla(info.buying);
-                    tdSelling.textContent = formatla(info.selling);
+                    // Capraz kur hesaplama
+                    const crossBuy = info.buying / baseInfo.buying;
+                    const crossSell = info.selling / baseInfo.selling;
+                    if (currentDirection === 'duz') {
+                        buyVal = crossBuy;
+                        sellVal = crossSell;
+                    } else {
+                        buyVal = 1 / crossBuy;
+                        sellVal = 1 / crossSell;
+                    }
                 }
+
+                const tdBuying = document.createElement('td');
+                tdBuying.textContent = formatla(buyVal);
+                const tdSelling = document.createElement('td');
+                tdSelling.textContent = formatla(sellVal);
 
                 tr.appendChild(tdName);
                 tr.appendChild(tdBuying);
                 tr.appendChild(tdSelling);
                 tbody.appendChild(tr);
             });
+
+            // TRY satiri ekle (capraz kurda)
+            if (isCross && baseInfo) {
+                const tr = document.createElement('tr');
+                const tdName = document.createElement('td');
+                const kodBold = document.createElement('b');
+                kodBold.textContent = 'TRY';
+                tdName.appendChild(kodBold);
+                tdName.appendChild(document.createTextNode(' '));
+                const kodSpan = document.createElement('span');
+                kodSpan.className = 'currency-name-detail';
+                kodSpan.textContent = currentLang === 'en' ? 'Turkish Lira' : 'Türk Lirası';
+                tdName.appendChild(kodSpan);
+
+                let buyVal, sellVal;
+                if (currentDirection === 'duz') {
+                    buyVal = 1 / baseInfo.buying;
+                    sellVal = 1 / baseInfo.selling;
+                } else {
+                    buyVal = baseInfo.buying;
+                    sellVal = baseInfo.selling;
+                }
+
+                const tdBuying = document.createElement('td');
+                tdBuying.textContent = formatla(buyVal);
+                const tdSelling = document.createElement('td');
+                tdSelling.textContent = formatla(sellVal);
+
+                tr.appendChild(tdName);
+                tr.appendChild(tdBuying);
+                tr.appendChild(tdSelling);
+                tbody.appendChild(tr);
+            }
         })
         .catch(err => {
             console.error('TCMB kur listesi alinamadi:', err);
@@ -222,7 +270,7 @@ function tcmbTablosuGuncelle() {
             const errRow = document.createElement('tr');
             const errCell = document.createElement('td');
             errCell.colSpan = 3;
-            errCell.align = 'center';
+            errCell.style.textAlign = 'center';
             errCell.className = 'error-text';
             errCell.textContent = t('tcmbVerilerYuklenemedi');
             errRow.appendChild(errCell);

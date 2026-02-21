@@ -42,10 +42,40 @@ function uygulamayiYukle() {
 // Güncel Kur
 // =============================================
 
+function kaynakBilgisiniGuncelle(kaynak, dateStr) {
+    const zamanBox = document.getElementById('zamanGosterge');
+    if (!zamanBox) return;
+
+    const locale = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en-US' : 'tr-TR';
+    const tarih = dateStr ? new Date(dateStr).toLocaleDateString(locale) : '';
+
+    zamanBox.textContent = '';
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-info-circle';
+    zamanBox.appendChild(icon);
+
+    if (kaynak === 'ecb') {
+        zamanBox.appendChild(document.createTextNode(' ' + t('ecbKuru') + ' '));
+        const bold = document.createElement('b');
+        bold.textContent = t('ecbKapanis');
+        zamanBox.appendChild(bold);
+    } else {
+        zamanBox.appendChild(document.createTextNode(' ' + t('tcmbKuru') + ' '));
+        const bold = document.createElement('b');
+        bold.textContent = t('tcmbAlisSatis');
+        zamanBox.appendChild(bold);
+    }
+
+    if (tarih) {
+        zamanBox.appendChild(document.createTextNode(' - ' + tarih));
+    }
+}
+
 function guncelKurlariGoster() {
     fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
         .then(data => {
             document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
+            kaynakBilgisiniGuncelle('ecb', data.date);
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
@@ -109,14 +139,46 @@ async function paraBirimleriniGetir() {
 // Tab 1 - Kur Listesi
 // =============================================
 
+function baseCurrencyDoldur(kaynak) {
+    const select = document.getElementById('baseCurrencySelect');
+    const onceki = select.value;
+    select.textContent = '';
+
+    if (kaynak === 'tcmb') {
+        // TRY'yi ilk secenek olarak ekle
+        const tryOpt = document.createElement('option');
+        tryOpt.value = 'TRY';
+        tryOpt.text = 'TRY - ' + (currentLang === 'en' ? 'Turkish Lira' : 'T\u00fcrk Liras\u0131');
+        select.appendChild(tryOpt);
+
+        // TCMB para birimlerini ekle
+        Object.entries(tcmbParaBirimleri).forEach(([code, info]) => {
+            const option = document.createElement('option');
+            option.value = code;
+            const name = (currentLang === 'en') ? (info.nameEn || info.nameTr) : info.nameTr;
+            option.text = `${code} - ${name}`;
+            select.appendChild(option);
+        });
+    } else {
+        // ECB para birimlerini ekle
+        Object.entries(tumParaBirimleri).forEach(([code, name]) => {
+            const option = document.createElement('option');
+            option.value = code;
+            option.text = `${code} - ${name}`;
+            select.appendChild(option);
+        });
+    }
+
+    // Onceki secimi koru, yoksa TRY
+    const mevcutMu = [...select.options].some(o => o.value === onceki);
+    select.value = mevcutMu ? onceki : 'TRY';
+}
+
 function setKaynak(kaynak) {
     currentKaynak = kaynak;
     localStorage.setItem('pratikur_kaynak', kaynak);
     document.getElementById('btnEcb').classList.toggle('active', kaynak === 'ecb');
     document.getElementById('btnTcmb').classList.toggle('active', kaynak === 'tcmb');
-
-    // ECB kontrolleri (para birimi secici) goster/gizle
-    document.getElementById('ecbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
 
     // Tablo basligini guncelle
     const thead = document.querySelector('#kurTablosu thead tr');
@@ -137,6 +199,9 @@ function setKaynak(kaynak) {
         thead.appendChild(th2);
     }
 
+    // Para birimi dropdown'unu guncelle
+    baseCurrencyDoldur(kaynak);
+
     // Guncel kur ve tablo guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
@@ -147,13 +212,13 @@ function guncelKurlariGuncelle() {
         tcmbGuncelKurlariGoster();
     } else {
         guncelKurlariGoster();
-        document.getElementById('guncelKurKaynak').textContent = t('ecbKaynak');
     }
 }
 
 function kurListesiGuncelle() {
+    const base = document.getElementById('baseCurrencySelect').value;
     if (currentKaynak === 'tcmb') {
-        tcmbTablosuGuncelle();
+        tcmbTablosuGuncelle(base);
     } else {
         tabloyuGuncelle();
     }
@@ -170,7 +235,6 @@ function tabloyuGuncelle() {
     const base = document.getElementById('baseCurrencySelect').value;
     const tbody = document.getElementById('kurListesiBody');
     const baslik = document.getElementById('tabloBaslikDeger');
-    const zamanBox = document.getElementById('zamanGosterge');
 
     baslik.innerText = currentDirection === 'duz'
         ? `1 ${base} Karsiligi`
@@ -189,17 +253,6 @@ function tabloyuGuncelle() {
         .then(data => {
             sonGelenVeri = data;
             tbody.textContent = '';
-
-            const tarih = new Date(data.date).toLocaleDateString('tr-TR');
-            zamanBox.textContent = '';
-            const icon = document.createElement('i');
-            icon.className = 'fas fa-info-circle';
-            zamanBox.appendChild(icon);
-            zamanBox.appendChild(document.createTextNode(' ' + t('ecbKuru') + ' '));
-            const bold = document.createElement('b');
-            bold.textContent = t('ecbKapanis');
-            zamanBox.appendChild(bold);
-            zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
 
             Object.entries(data.rates).forEach(([kod, oran]) => {
                 const deger = currentDirection === 'duz' ? oran : (1 / oran);
@@ -542,7 +595,7 @@ window.onload = async function () {
     translatePage();
 
     await paraBirimleriniGetir();
-    tcmbParaBirimleriniDoldur();
+    await tcmbParaBirimleriniDoldur();
 
     // Kaynak tercihini uygula
     setKaynak(currentKaynak);
