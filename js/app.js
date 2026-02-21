@@ -552,6 +552,20 @@ function setHistKaynak(kaynak) {
             thead.appendChild(th);
         });
     }
+
+    // Tablo icerigini sifirla
+    const tbody = document.getElementById('historyBody');
+    tbody.textContent = '';
+    const msgRow = document.createElement('tr');
+    const msgCell = document.createElement('td');
+    msgCell.colSpan = kaynak === 'tcmb' ? 3 : 2;
+    msgCell.style.textAlign = 'center';
+    msgCell.textContent = t('tarihAraligi');
+    msgRow.appendChild(msgCell);
+    tbody.appendChild(msgRow);
+
+    // Eski CSV verisini temizle
+    sonGecmisVeri = null;
 }
 
 function gecmisKurlariGetirRouter() {
