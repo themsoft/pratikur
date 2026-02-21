@@ -324,6 +324,11 @@ function swapCurrencies() {
 }
 
 function ozelHesapla() {
+    if (currentKaynak === 'tcmb') {
+        tcmbOzelHesapla();
+        return;
+    }
+
     const amt = document.getElementById('calcAmount').value;
     const from = document.getElementById('calcFrom').value;
     const to = document.getElementById('calcTo').value;
