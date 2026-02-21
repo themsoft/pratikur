@@ -252,6 +252,11 @@ function translatePage() {
         el.placeholder = t(key);
     });
 
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria');
+        el.setAttribute('aria-label', t(key));
+    });
+
     // Sayfa basligini data-i18n-title'dan al
     const titleKey = document.documentElement.getAttribute('data-i18n-title');
     if (titleKey) document.title = t(titleKey);
