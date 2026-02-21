@@ -426,10 +426,11 @@ function gecmisKurlariGetir() {
                 return;
             }
 
+            const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
             const dates = Object.keys(data.rates).sort().reverse();
             dates.forEach(date => {
                 const rate = data.rates[date][target];
-                const formattedDate = new Date(date).toLocaleDateString('tr-TR');
+                const formattedDate = new Date(date).toLocaleDateString(locale);
 
                 const tr = document.createElement('tr');
                 const tdDate = document.createElement('td');
