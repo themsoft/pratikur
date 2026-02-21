@@ -137,18 +137,18 @@ body {
 }
 
 .header-icon-btn {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--border-medium);
     background: var(--bg-container);
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     color: var(--text-secondary);
     font-size: 0.85em;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s;
+    transition: all 0.2s;
 }
 
 .header-icon-btn:hover {
@@ -258,6 +258,16 @@ body {
     border-radius: 8px;
     padding: 6px 10px;
     font-size: 0.8em;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.favori-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .favori-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .favori-card-label {
@@ -499,6 +509,11 @@ input[type="date"]:focus {
 .btn-csv:hover {
     background-color: var(--accent-purple-dark);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+}
+
+[data-theme="dark"] .btn-csv:hover {
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
 }
 
 /* === Focus Visible === */
@@ -556,7 +571,8 @@ tbody tr:hover {
 /* === Sonuç & Bilgi Kutuları === */
 .sonuc-kutusu {
     background: var(--bg-result);
-    border: 1px dashed var(--border-result);
+    border: 1px solid var(--border-light);
+    border-left: 4px solid var(--border-result);
     color: var(--text-result);
     padding: 15px;
     border-radius: 8px;
@@ -789,6 +805,16 @@ tbody tr:hover {
     border-radius: 10px;
     padding: 15px;
     box-shadow: var(--shadow-stat);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .stat-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .stat-card-title {
@@ -947,6 +973,28 @@ tbody tr:hover {
     font-weight: bold;
     font-size: 0.95em;
     color: var(--text-brand);
+}
+
+/* === Scrollbar === */
+.table-container::-webkit-scrollbar,
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track,
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb,
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover,
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
 
 /* === Footer === */
