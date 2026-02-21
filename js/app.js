@@ -9,6 +9,7 @@ let sonGecmisVeri = null;
 let currentDirection = 'duz';
 let currentKaynak = localStorage.getItem('pratikur_kaynak') || 'ecb';
 let deferredPrompt;
+let favoriler = JSON.parse(localStorage.getItem('pratikur_favorites') || '[]');
 
 // =============================================
 // PWA
@@ -211,9 +212,10 @@ function setKaynak(kaynak) {
     // Cevirici dropdown'larini guncelle
     ceviriciDropdownGuncelle(kaynak);
 
-    // Guncel kur ve tablo guncelle
+    // Guncel kur, tablo ve favoriler guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
+    favorileriGoster();
 }
 
 function guncelKurlariGuncelle() {
@@ -537,6 +539,93 @@ function gecmisExcelIndir() {
     });
 
     csvIndir(`kur_arsivi_${base}_${target}.csv`, csv);
+}
+
+// =============================================
+// Favoriler
+// =============================================
+
+function toggleFavori(kod) {
+    const idx = favoriler.indexOf(kod);
+    if (idx > -1) {
+        favoriler.splice(idx, 1);
+    } else {
+        if (favoriler.length >= 6) return; // Max 6 favori
+        favoriler.push(kod);
+    }
+    localStorage.setItem('pratikur_favorites', JSON.stringify(favoriler));
+    favorileriGoster();
+    kurListesiGuncelle();
+}
+
+function favorileriGoster() {
+    const container = document.getElementById('favoriContainer');
+    container.textContent = '';
+
+    if (favoriler.length === 0) {
+        container.classList.add('hidden');
+        return;
+    }
+    container.classList.remove('hidden');
+
+    if (currentKaynak === 'tcmb') {
+        tcmbKurlariGetir().then(data => {
+            container.textContent = '';
+            favoriler.forEach(kod => {
+                if (!data.rates[kod]) return;
+                const card = document.createElement('div');
+                card.className = 'favori-card';
+
+                const label = document.createElement('span');
+                label.className = 'favori-card-label';
+                label.textContent = kod + '/TRY';
+                card.appendChild(label);
+
+                const val = document.createElement('span');
+                val.className = 'favori-card-value';
+                val.textContent = data.rates[kod].selling.toFixed(4);
+                card.appendChild(val);
+
+                const silBtn = document.createElement('button');
+                silBtn.className = 'favori-sil-btn';
+                silBtn.innerHTML = '<i class="fas fa-times"></i>';
+                silBtn.title = t('favorilerdenCikar');
+                silBtn.onclick = () => toggleFavori(kod);
+                card.appendChild(silBtn);
+
+                container.appendChild(card);
+            });
+        }).catch(() => {});
+    } else {
+        fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=TRY')
+            .then(data => {
+                container.textContent = '';
+                favoriler.forEach(kod => {
+                    if (!data.rates[kod]) return;
+                    const card = document.createElement('div');
+                    card.className = 'favori-card';
+
+                    const label = document.createElement('span');
+                    label.className = 'favori-card-label';
+                    label.textContent = kod + '/TRY';
+                    card.appendChild(label);
+
+                    const val = document.createElement('span');
+                    val.className = 'favori-card-value';
+                    val.textContent = (1 / data.rates[kod]).toFixed(4);
+                    card.appendChild(val);
+
+                    const silBtn = document.createElement('button');
+                    silBtn.className = 'favori-sil-btn';
+                    silBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    silBtn.title = t('favorilerdenCikar');
+                    silBtn.onclick = () => toggleFavori(kod);
+                    card.appendChild(silBtn);
+
+                    container.appendChild(card);
+                });
+            }).catch(() => {});
+    }
 }
 
 // =============================================
