@@ -687,6 +687,14 @@ function arsivKontrolleriniGuncelle(kaynak) {
     document.getElementById('histEcbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
     document.getElementById('histTcmbKontroller').classList.toggle('hidden', kaynak === 'ecb');
 
+    const uyari = document.getElementById('histTcmbUyari');
+    if (kaynak === 'tcmb') {
+        uyari.textContent = t('tcmbSadeceTry');
+        uyari.classList.remove('hidden');
+    } else {
+        uyari.classList.add('hidden');
+    }
+
     // Tablo basligini sifirla
     const thead = document.querySelector('#historyTable thead tr');
     thead.textContent = '';
