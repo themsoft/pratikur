@@ -78,6 +78,7 @@ function guncelKurlariGoster() {
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
+            kaynakBilgisiniGuncelle('ecb', null);
         });
 
     fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')

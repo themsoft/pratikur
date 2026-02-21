@@ -55,6 +55,7 @@ function tcmbGuncelKurlariGoster() {
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
             document.getElementById('guncelEur').textContent = '--';
+            kaynakBilgisiniGuncelle('tcmb', null);
         });
 }
 
