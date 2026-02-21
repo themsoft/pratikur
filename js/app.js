@@ -202,6 +202,9 @@ function setKaynak(kaynak) {
     // Para birimi dropdown'unu guncelle
     baseCurrencyDoldur(kaynak);
 
+    // Arsiv kontollerini guncelle (global kaynak secimi)
+    arsivKontrolleriniGuncelle(kaynak);
+
     // Guncel kur ve tablo guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
@@ -529,12 +532,7 @@ function gecmisExcelIndir() {
 // UI
 // =============================================
 
-let histKaynak = 'ecb';
-
-function setHistKaynak(kaynak) {
-    histKaynak = kaynak;
-    document.getElementById('btnHistEcb').classList.toggle('active', kaynak === 'ecb');
-    document.getElementById('btnHistTcmb').classList.toggle('active', kaynak === 'tcmb');
+function arsivKontrolleriniGuncelle(kaynak) {
     document.getElementById('histEcbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
     document.getElementById('histTcmbKontroller').classList.toggle('hidden', kaynak === 'ecb');
 
@@ -571,7 +569,7 @@ function setHistKaynak(kaynak) {
 }
 
 function gecmisKurlariGetirRouter() {
-    if (histKaynak === 'tcmb') {
+    if (currentKaynak === 'tcmb') {
         tcmbGecmisKurlariGetir();
     } else {
         gecmisKurlariGetir();
