@@ -6,7 +6,7 @@
 let tumParaBirimleri = {};
 let sonGelenVeri = null;
 let sonGecmisVeri = null;
-let currentDirection = 'duz';
+let currentDirection = 'ters';
 let currentKaynak = localStorage.getItem('pratikur_kaynak') || 'ecb';
 let deferredPrompt;
 let favoriler = JSON.parse(localStorage.getItem('pratikur_favorites') || '[]');
