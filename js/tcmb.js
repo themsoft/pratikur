@@ -133,7 +133,7 @@ async function tcmbGecmisKurlariGetir() {
     // Tablo basligini guncelle
     const thead = document.querySelector('#historyTable thead tr');
     thead.textContent = '';
-    ['Tarih', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+    [t('thTarih'), t('thAlis'), t('thSatis')].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         thead.appendChild(th);

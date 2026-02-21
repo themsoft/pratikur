@@ -184,17 +184,17 @@ function setKaynak(kaynak) {
     const thead = document.querySelector('#kurTablosu thead tr');
     thead.textContent = '';
     if (kaynak === 'tcmb') {
-        ['Para Birimi', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+        [t('thParaBirimi'), t('thAlis'), t('thSatis')].forEach(text => {
             const th = document.createElement('th');
             th.textContent = text;
             thead.appendChild(th);
         });
     } else {
         const th1 = document.createElement('th');
-        th1.textContent = 'Para Birimi';
+        th1.textContent = t('thParaBirimi');
         const th2 = document.createElement('th');
         th2.id = 'tabloBaslikDeger';
-        th2.textContent = 'De\u011fer';
+        th2.textContent = t('thDeger');
         thead.appendChild(th1);
         thead.appendChild(th2);
     }
@@ -541,13 +541,13 @@ function setHistKaynak(kaynak) {
     const thead = document.querySelector('#historyTable thead tr');
     thead.textContent = '';
     if (kaynak === 'tcmb') {
-        ['Tarih', 'Al\u0131\u015f', 'Sat\u0131\u015f'].forEach(text => {
+        [t('thTarih'), t('thAlis'), t('thSatis')].forEach(text => {
             const th = document.createElement('th');
             th.textContent = text;
             thead.appendChild(th);
         });
     } else {
-        ['Tarih', 'Kur De\u011feri'].forEach(text => {
+        [t('thTarih'), t('thKurDegeri')].forEach(text => {
             const th = document.createElement('th');
             th.textContent = text;
             thead.appendChild(th);
