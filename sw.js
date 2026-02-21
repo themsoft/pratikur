@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pratikur-v4';
+const CACHE_NAME = 'pratikur-v5';
 const ASSETS = [
   '/',
   '/index.html',
