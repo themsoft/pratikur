@@ -7,6 +7,8 @@ const TRANSLATIONS = {
         // Header
         guncelKur: 'G\u00fcncel Kur',
         ecbKaynak: 'Avrupa Merkez Bankas\u0131 - G\u00fcnl\u00fck Kapan\u0131\u015f',
+        ecbAciklama: 'Avrupa Merkez Bankas\u0131. G\u00fcnl\u00fck kapan\u0131\u015f kuru (tek fiyat) yay\u0131nlar.',
+        tcmbAciklama: 'T.C. Merkez Bankas\u0131. Al\u0131\u015f ve sat\u0131\u015f kuru olarak iki fiyat yay\u0131nlar.',
         uygulamaYukle: 'Uygulamay\u0131 Y\u00fckle',
 
         // Tabs
@@ -136,6 +138,8 @@ const TRANSLATIONS = {
         // Header
         guncelKur: 'Current Rate',
         ecbKaynak: 'European Central Bank - Daily Close',
+        ecbAciklama: 'European Central Bank. Publishes daily closing rate (single price).',
+        tcmbAciklama: 'Central Bank of Turkey. Publishes two prices as buying and selling rates.',
         uygulamaYukle: 'Install App',
 
         // Tabs

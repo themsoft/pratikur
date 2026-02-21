@@ -72,6 +72,11 @@ function uygulamayiYukle() {
 // Güncel Kur
 // =============================================
 
+function kaynakInfoToggle() {
+    var box = document.getElementById('kaynakInfoBox');
+    if (box) box.classList.toggle('hidden');
+}
+
 function kaynakBilgisiniGuncelle(kaynak, dateStr) {
     const zamanBox = document.getElementById('zamanGosterge');
     if (!zamanBox) return;

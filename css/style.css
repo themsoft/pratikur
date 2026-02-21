@@ -233,7 +233,40 @@ body {
 .source-toggle-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 10px;
+}
+
+.kaynak-info-toggle {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.85em;
+    margin-left: 6px;
+    transition: color 0.2s;
+}
+
+.kaynak-info-toggle:hover {
+    color: var(--accent-blue);
+}
+
+.kaynak-info-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 0.78em;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    text-align: left;
+}
+
+.kaynak-info-box p {
+    margin: 0 0 4px 0;
+}
+
+.kaynak-info-box p:last-child {
+    margin-bottom: 0;
 }
 
 .direction-toggle--compact {
