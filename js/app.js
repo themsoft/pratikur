@@ -101,22 +101,25 @@ function kaynakBilgisiniGuncelle(kaynak, dateStr) {
 }
 
 function guncelKurlariGoster() {
-    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
+    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY,USD,GBP')
         .then(data => {
-            document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
+            var eurTry = data.rates.TRY;
+            var eurUsd = data.rates.USD;
+            var eurGbp = data.rates.GBP;
+            var usdTry = eurTry / eurUsd;
+            var gbpTry = eurTry / eurGbp;
+
+            document.getElementById('guncelUsd').textContent = usdTry.toFixed(4);
+            document.getElementById('guncelEur').textContent = eurTry.toFixed(4);
+            document.getElementById('guncelGbp').textContent = gbpTry.toFixed(4);
+            document.getElementById('guncelEurUsd').textContent = eurUsd.toFixed(4);
             kaynakBilgisiniGuncelle('ecb', data.date);
         })
         .catch(() => {
-            document.getElementById('guncelUsd').textContent = '--';
+            ['guncelUsd', 'guncelEur', 'guncelGbp', 'guncelEurUsd'].forEach(function(id) {
+                document.getElementById(id).textContent = '--';
+            });
             kaynakBilgisiniGuncelle('ecb', null);
-        });
-
-    fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=TRY')
-        .then(data => {
-            document.getElementById('guncelEur').textContent = data.rates.TRY.toFixed(4);
-        })
-        .catch(() => {
-            document.getElementById('guncelEur').textContent = '--';
         });
 }
 
@@ -240,6 +243,13 @@ function setKaynak(kaynak) {
 
     // Cevirici dropdown'larini guncelle
     ceviriciDropdownGuncelle(kaynak);
+
+    // TCMB satis kuru etiketini goster/gizle
+    var tcmbEtiket = document.getElementById('tcmbEtiket');
+    if (tcmbEtiket) {
+        tcmbEtiket.classList.toggle('hidden', kaynak !== 'tcmb');
+        tcmbEtiket.textContent = t('satisKuru');
+    }
 
     // Guncel kur, tablo ve favoriler guncelle
     guncelKurlariGuncelle();

@@ -50,6 +50,7 @@ const TRANSLATIONS = {
         gecerliMiktar: 'Lütfen geçerli bir miktar girin.',
         alisFiyati: 'Alış',
         satisFiyati: 'Satış',
+        satisKuru: 'Satış Kuru',
         disclaimerEcb: 'Veriler Avrupa Merkez Bankası kaynaklıdır.',
 
         // Tab 3
@@ -178,6 +179,7 @@ const TRANSLATIONS = {
         gecerliMiktar: 'Please enter a valid amount.',
         alisFiyati: 'Buying',
         satisFiyati: 'Selling',
+        satisKuru: 'Selling Rate',
         disclaimerEcb: 'Data sourced from the European Central Bank.',
 
         // Tab 3

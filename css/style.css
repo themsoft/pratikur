@@ -209,7 +209,7 @@ body {
 }
 
 .current-rate-value {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold;
     color: var(--text-brand);
     display: block;
@@ -218,8 +218,16 @@ body {
 
 .current-rate-divider {
     width: 1px;
-    height: 40px;
+    height: 30px;
     background: var(--border-medium);
+}
+
+.tcmb-etiket {
+    text-align: center;
+    font-size: 0.7em;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-style: italic;
 }
 
 .source-toggle-container {
@@ -1051,8 +1059,21 @@ tbody tr:hover {
         padding: 8px;
     }
 
+    .current-rate-row {
+        flex-wrap: wrap;
+        gap: 8px 0;
+    }
+
+    .current-rate-item {
+        flex: 0 0 45%;
+    }
+
+    .current-rate-divider {
+        display: none;
+    }
+
     .current-rate-value {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 
     .date-group {

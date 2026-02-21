@@ -44,17 +44,22 @@ async function tcmbParaBirimleriniDoldur() {
 function tcmbGuncelKurlariGoster() {
     tcmbKurlariGetir()
         .then(data => {
-            if (data.rates.USD) {
+            if (data.rates.USD)
                 document.getElementById('guncelUsd').textContent = data.rates.USD.selling.toFixed(4);
-            }
-            if (data.rates.EUR) {
+            if (data.rates.EUR)
                 document.getElementById('guncelEur').textContent = data.rates.EUR.selling.toFixed(4);
+            if (data.rates.GBP)
+                document.getElementById('guncelGbp').textContent = data.rates.GBP.selling.toFixed(4);
+            if (data.rates.EUR && data.rates.USD) {
+                var eurUsd = data.rates.EUR.selling / data.rates.USD.selling;
+                document.getElementById('guncelEurUsd').textContent = eurUsd.toFixed(4);
             }
             kaynakBilgisiniGuncelle('tcmb', data.date);
         })
         .catch(() => {
-            document.getElementById('guncelUsd').textContent = '--';
-            document.getElementById('guncelEur').textContent = '--';
+            ['guncelUsd', 'guncelEur', 'guncelGbp', 'guncelEurUsd'].forEach(function(id) {
+                document.getElementById(id).textContent = '--';
+            });
             kaynakBilgisiniGuncelle('tcmb', null);
         });
 }
