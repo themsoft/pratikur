@@ -290,3 +290,93 @@ function tcmbTablosuGuncelle(base) {
             tbody.appendChild(errRow);
         });
 }
+
+// =============================================
+// Cevirici - TCMB Hesaplama
+// =============================================
+
+async function tcmbOzelHesapla() {
+    const amt = parseFloat(document.getElementById('calcAmount').value);
+    const from = document.getElementById('calcFrom').value;
+    const to = document.getElementById('calcTo').value;
+    const resBox = document.getElementById('calcResult');
+
+    if (from === to) {
+        resBox.textContent = t('ayniParaBirimi');
+        return;
+    }
+
+    if (isNaN(amt) || amt <= 0) {
+        resBox.textContent = t('gecerliMiktar');
+        return;
+    }
+
+    resBox.textContent = '';
+    const spinner = document.createElement('i');
+    spinner.className = 'fas fa-spinner fa-spin';
+    resBox.appendChild(spinner);
+    resBox.appendChild(document.createTextNode(' ' + t('hesaplaniyor')));
+
+    try {
+        const data = await tcmbKurlariGetir();
+        let buyResult, sellResult;
+
+        if (from === 'TRY' && to === 'TRY') {
+            resBox.textContent = t('ayniParaBirimi');
+            return;
+        } else if (from === 'TRY') {
+            // TRY -> yabanci: alis ile bol, satis ile bol
+            buyResult = amt / data.rates[to].buying;
+            sellResult = amt / data.rates[to].selling;
+        } else if (to === 'TRY') {
+            // Yabanci -> TRY: alis ile carp, satis ile carp
+            buyResult = amt * data.rates[from].buying;
+            sellResult = amt * data.rates[from].selling;
+        } else {
+            // Capraz kur: yabanci -> yabanci
+            buyResult = amt * (data.rates[from].buying / data.rates[to].buying);
+            sellResult = amt * (data.rates[from].selling / data.rates[to].selling);
+        }
+
+        const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
+        resBox.textContent = '';
+
+        // Alis satiri
+        const buyRow = document.createElement('div');
+        buyRow.className = 'calc-result-row';
+        const buyLabel = document.createElement('span');
+        buyLabel.className = 'calc-result-label';
+        buyLabel.textContent = t('alisFiyati') + ':';
+        const buyValue = document.createElement('span');
+        buyValue.appendChild(document.createTextNode(`${amt} ${from} = `));
+        const buyBold = document.createElement('b');
+        buyBold.textContent = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(buyResult);
+        buyValue.appendChild(buyBold);
+        buyValue.appendChild(document.createTextNode(` ${to}`));
+        buyRow.appendChild(buyLabel);
+        buyRow.appendChild(buyValue);
+
+        // Satis satiri
+        const sellRow = document.createElement('div');
+        sellRow.className = 'calc-result-row';
+        const sellLabel = document.createElement('span');
+        sellLabel.className = 'calc-result-label';
+        sellLabel.textContent = t('satisFiyati') + ':';
+        const sellValue = document.createElement('span');
+        sellValue.appendChild(document.createTextNode(`${amt} ${from} = `));
+        const sellBold = document.createElement('b');
+        sellBold.textContent = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(sellResult);
+        sellValue.appendChild(sellBold);
+        sellValue.appendChild(document.createTextNode(` ${to}`));
+        sellRow.appendChild(sellLabel);
+        sellRow.appendChild(sellValue);
+
+        resBox.appendChild(buyRow);
+        resBox.appendChild(sellRow);
+
+        updateHistory(`${amt} ${from} -> ${sellResult.toFixed(2)} ${to} (TCMB)`);
+    } catch (err) {
+        console.error('TCMB hesaplama hatasi:', err);
+        resBox.textContent = t('hesaplamaYapilamadi');
+    }
+}

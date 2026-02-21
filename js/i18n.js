@@ -46,8 +46,11 @@ const TRANSLATIONS = {
         sonHesaplamalar: 'Son Hesaplamalar',
         hesaplaniyor: 'Hesaplan\u0131yor...',
         ayniParaBirimi: 'Ayn\u0131 para birimi se\u00e7ili.',
-        hesaplamaYapilamadi: 'Hesaplama yap\u0131lamad\u0131.',
-        disclaimerEcb: 'Veriler Avrupa Merkez Bankas\u0131 kaynakl\u0131d\u0131r.',
+        hesaplamaYapilamadi: 'Hesaplama yapılamadı.',
+        gecerliMiktar: 'Lütfen geçerli bir miktar girin.',
+        alisFiyati: 'Alış',
+        satisFiyati: 'Satış',
+        disclaimerEcb: 'Veriler Avrupa Merkez Bankası kaynaklıdır.',
 
         // Tab 3
         gecmisKurlar: 'Ge\u00e7mi\u015f Kurlar',
@@ -165,6 +168,9 @@ const TRANSLATIONS = {
         hesaplaniyor: 'Calculating...',
         ayniParaBirimi: 'Same currency selected.',
         hesaplamaYapilamadi: 'Calculation failed.',
+        gecerliMiktar: 'Please enter a valid amount.',
+        alisFiyati: 'Buying',
+        satisFiyati: 'Selling',
         disclaimerEcb: 'Data sourced from the European Central Bank.',
 
         // Tab 3
