@@ -29,6 +29,15 @@ async function fetchWithRetry(url, maxRetry = 3) {
     throw lastError;
 }
 
+// --- Tarih Formatlama ---
+
+function formatTarih(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    const locale = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en-GB' : 'tr-TR';
+    return d.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
 // --- CSV Indirme ---
 
 function csvIndir(filename, csvContent) {
