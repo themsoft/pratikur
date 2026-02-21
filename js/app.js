@@ -16,8 +16,7 @@ let deferredPrompt;
 
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
     navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('SW kayıtlı'))
-        .catch(err => console.log('SW hatası:', err));
+        .catch(() => {});
 }
 
 window.addEventListener('beforeinstallprompt', (e) => {
