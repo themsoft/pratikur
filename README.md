@@ -6,12 +6,14 @@ Currency tracking, converter and statistics app. Real-time exchange rates from E
 
 ## Features
 
-- **Rate List** - All currency rates with ECB or TCMB data source toggle
-- **Current Rate** - USD/TRY and EUR/TRY at a glance (ECB daily close or TCMB buying/selling)
-- **Converter** - Quick currency conversion with persistent calculation history
+- **Rate List** - All currency rates with ECB or TCMB data source toggle and info tooltips
+- **Current Rate** - USD/TRY, EUR/TRY, GBP/TRY and EUR/USD at a glance (ECB daily close or TCMB selling rate)
+- **Converter** - Quick currency conversion with persistent calculation history (TCMB shows buying/selling)
 - **Historical Rates** - Date range queries from ECB or TCMB archive
 - **Rate Statistics** - Monthly averages, min/max values, daily/weekly/monthly percentage changes
+- **Favorites** - Pin currencies to the top section for quick access (persistent)
 - **CSV Export** - Download rate lists and historical data as CSV
+- **Dark Theme** - Light/dark mode toggle with persistent preference
 - **Multi-language** - Turkish and English (TR/EN) with persistent preference
 - **PWA** - Installable as a mobile/desktop app with offline support
 
@@ -20,6 +22,7 @@ Currency tracking, converter and statistics app. Real-time exchange rates from E
 - Vanilla JavaScript (no framework)
 - [Frankfurter API](https://frankfurter.dev) (ECB exchange rates)
 - [TCMB](https://www.tcmb.gov.tr) (Central Bank of Turkey rates via Netlify Functions proxy)
+- CSS custom properties for theming (light/dark)
 - i18n system with `data-i18n` attributes
 - Service Worker (PWA, network-first with cache fallback)
 - Hosted on Netlify
@@ -29,10 +32,10 @@ Currency tracking, converter and statistics app. Real-time exchange rates from E
 ```
 pratikur/
   index.html                  Main app page
-  privacy.html                Privacy policy (multi-language)
-  css/style.css               All styles + responsive breakpoints
+  privacy.html                Privacy policy (multi-language, dark mode)
+  css/style.css               All styles, CSS variables, dark theme, responsive
   js/
-    utils.js                  Helpers (formatla, fetchWithRetry, csvIndir)
+    utils.js                  Helpers (formatla, fetchWithRetry, formatTarih, csvIndir)
     i18n.js                   Translation system (TR/EN, ~100 keys)
     tcmb.js                   TCMB data operations
     stats.js                  Rate statistics engine + rendering
