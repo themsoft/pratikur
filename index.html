@@ -51,6 +51,13 @@
                     <button class="direction-btn active" id="btnEcb" onclick="setKaynak('ecb')">ECB</button>
                     <button class="direction-btn" id="btnTcmb" onclick="setKaynak('tcmb')">TCMB</button>
                 </div>
+                <span class="kaynak-info-toggle" id="kaynakInfoBtn" onclick="kaynakInfoToggle()" aria-label="Bilgi">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+            </div>
+            <div id="kaynakInfoBox" class="kaynak-info-box hidden">
+                <p><b>ECB</b> <span data-i18n="ecbAciklama">Avrupa Merkez Bankası. Günlük kapanış kuru (tek fiyat) yayınlar.</span></p>
+                <p><b>TCMB</b> <span data-i18n="tcmbAciklama">T.C. Merkez Bankası. Alış ve satış kuru olarak iki fiyat yayınlar.</span></p>
             </div>
             <div class="current-rate-row">
                 <div class="current-rate-item">
@@ -97,8 +104,8 @@
 
             <div class="kontrol-paneli">
                 <div class="direction-toggle">
-                    <button class="direction-btn active" id="btnDuz" onclick="setDirection('duz')" data-i18n="anaYabanci">Ana -> Yabancı</button>
-                    <button class="direction-btn" id="btnTers" onclick="setDirection('ters')" data-i18n="yabanciAna">Yabancı -> Ana</button>
+                    <button class="direction-btn active" id="btnTers" onclick="setDirection('ters')" data-i18n="yabanciAna">Yabancı -> Ana</button>
+                    <button class="direction-btn" id="btnDuz" onclick="setDirection('duz')" data-i18n="anaYabanci">Ana -> Yabancı</button>
                 </div>
                 <button class="btn btn-csv" onclick="excelIndir()"><i class="fas fa-file-csv"></i> <span data-i18n="excelIndir">Excel İndir</span></button>
             </div>
