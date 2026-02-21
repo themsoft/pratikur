@@ -30,7 +30,7 @@ function temaUygula() {
     }
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) {
-        meta.content = currentTheme === 'dark' ? '#1a1b23' : '#ffffff';
+        meta.content = currentTheme === 'dark' ? '#111827' : '#ffffff';
     }
     const colorScheme = document.querySelector('meta[name="color-scheme"]');
     if (colorScheme) {

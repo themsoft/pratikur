@@ -23,6 +23,8 @@ Currency tracking, converter and statistics app. Real-time exchange rates from E
 - [Frankfurter API](https://frankfurter.dev) (ECB exchange rates)
 - [TCMB](https://www.tcmb.gov.tr) (Central Bank of Turkey rates via Netlify Functions proxy)
 - CSS custom properties for theming (light/dark)
+- [Outfit](https://fonts.google.com/specimen/Outfit) + [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) typography
+- Warm Fintech design system (amber/gold accents, glassmorphism, micro-animations)
 - i18n system with `data-i18n` attributes
 - Service Worker (PWA, network-first with cache fallback)
 - Hosted on Netlify

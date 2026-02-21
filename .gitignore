@@ -3,3 +3,6 @@
 .DS_Store
 Thumbs.db
 CLAUDE.md
+
+# Local Netlify folder
+.netlify
