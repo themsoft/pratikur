@@ -210,15 +210,17 @@
                 </div>
 
                 <div class="swap-container swap-container--spaced">
-                    <div class="flex-item">
+                    <div class="flex-item" id="statBaseContainer">
                         <label for="statBase" data-i18n="anaPara">Ana Para:</label>
                         <select id="statBase"><option value="USD">USD</option></select>
                     </div>
-                    <div class="flex-item flex-item--spaced">
+                    <div class="flex-item flex-item--spaced" id="statTargetContainer">
                         <label for="statTarget" data-i18n="hedefPara">Hedef Para:</label>
                         <select id="statTarget"><option value="TRY" selected>TRY</option></select>
                     </div>
                 </div>
+
+                <div id="statTcmbUyari" class="hidden disclaimer-small" style="margin-top:0;margin-bottom:10px"></div>
 
                 <button class="btn btn-green btn--flush" onclick="istatistikHesapla()" data-i18n="istatistikHesapla">İSTATİSTİKLERİ HESAPLA</button>
             </div>
@@ -226,7 +228,7 @@
             <div id="statProgress" class="hidden progress-text"></div>
             <div id="statSonuclar" class="stat-container"></div>
 
-            <div class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
+            <div id="statDisclaimer" class="disclaimer-small" data-i18n="disclaimerEcb">Veriler Avrupa Merkez Bankası kaynaklıdır.</div>
         </div>
 
         <div class="footer-links">

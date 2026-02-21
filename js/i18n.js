@@ -87,6 +87,9 @@ const TRANSLATIONS = {
         ay: 'Ay',
         statHesaplaniyor: '\u0130statistikler hesaplan\u0131yor...',
         statVeriBulunamadi: 'Se\u00e7ilen tarih aral\u0131\u011f\u0131 i\u00e7in veri bulunamad\u0131.',
+        tcmbSadeceTry: 'TCMB verileri sadece TRY bazl\u0131 \u00e7ekilmektedir.',
+        tcmbStatNot: '\u0130statistikler sat\u0131\u015f kuru \u00fczerinden hesaplanm\u0131\u015ft\u0131r.',
+        disclaimerTcmb: 'Veriler T.C. Merkez Bankas\u0131 kaynakl\u0131d\u0131r.',
 
         // Footer
         gizlilikPolitikasi: 'Gizlilik Politikas\u0131',
@@ -202,6 +205,9 @@ const TRANSLATIONS = {
         ay: 'Month',
         statHesaplaniyor: 'Calculating statistics...',
         statVeriBulunamadi: 'No data found for the selected date range.',
+        tcmbSadeceTry: 'TCMB data is only available in TRY base.',
+        tcmbStatNot: 'Statistics calculated based on selling rate.',
+        disclaimerTcmb: 'Data sourced from the Central Bank of Turkey.',
 
         // Footer
         gizlilikPolitikasi: 'Privacy Policy',

@@ -205,6 +205,9 @@ function setKaynak(kaynak) {
     // Arsiv kontollerini guncelle (global kaynak secimi)
     arsivKontrolleriniGuncelle(kaynak);
 
+    // Istatistik kontrollerini guncelle
+    istatistikKontrolleriniGuncelle(kaynak);
+
     // Guncel kur ve tablo guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
@@ -566,6 +569,61 @@ function arsivKontrolleriniGuncelle(kaynak) {
 
     // Eski CSV verisini temizle
     sonGecmisVeri = null;
+}
+
+function istatistikKontrolleriniGuncelle(kaynak) {
+    const baseContainer = document.getElementById('statBaseContainer');
+    const targetSelect = document.getElementById('statTarget');
+    const uyari = document.getElementById('statTcmbUyari');
+    const disclaimer = document.getElementById('statDisclaimer');
+
+    if (kaynak === 'tcmb') {
+        // TCMB: base'i gizle (sadece TRY bazli), target'i tcmb para birimleri ile doldur
+        baseContainer.classList.add('hidden');
+
+        const onceki = targetSelect.value;
+        targetSelect.textContent = '';
+        Object.entries(tcmbParaBirimleri).forEach(([code, info]) => {
+            const option = document.createElement('option');
+            option.value = code;
+            const name = (currentLang === 'en') ? (info.nameEn || info.nameTr) : info.nameTr;
+            option.text = `${code} - ${name}`;
+            targetSelect.appendChild(option);
+        });
+        const mevcutMu = [...targetSelect.options].some(o => o.value === onceki);
+        targetSelect.value = mevcutMu ? onceki : 'USD';
+
+        uyari.textContent = t('tcmbSadeceTry');
+        uyari.classList.remove('hidden');
+        disclaimer.textContent = t('disclaimerTcmb');
+    } else {
+        // ECB: base'i goster, target'i ecb para birimleri ile doldur
+        baseContainer.classList.remove('hidden');
+
+        const oncekiBase = document.getElementById('statBase').value;
+        const oncekiTarget = targetSelect.value;
+
+        ['statBase', 'statTarget'].forEach(id => {
+            const el = document.getElementById(id);
+            el.textContent = '';
+            Object.entries(tumParaBirimleri).forEach(([code, name]) => {
+                const option = document.createElement('option');
+                option.value = code;
+                option.text = `${code} - ${name}`;
+                el.appendChild(option);
+            });
+        });
+
+        const baseEl = document.getElementById('statBase');
+        baseEl.value = [...baseEl.options].some(o => o.value === oncekiBase) ? oncekiBase : 'USD';
+        targetSelect.value = [...targetSelect.options].some(o => o.value === oncekiTarget) ? oncekiTarget : 'TRY';
+
+        uyari.classList.add('hidden');
+        disclaimer.textContent = t('disclaimerEcb');
+    }
+
+    // Istatistik sonuclarini temizle
+    document.getElementById('statSonuclar').textContent = '';
 }
 
 function gecmisKurlariGetirRouter() {
