@@ -10,6 +10,36 @@ let currentDirection = 'duz';
 let currentKaynak = localStorage.getItem('pratikur_kaynak') || 'ecb';
 let deferredPrompt;
 let favoriler = JSON.parse(localStorage.getItem('pratikur_favorites') || '[]');
+let currentTheme = localStorage.getItem('pratikur_theme') || 'light';
+
+// =============================================
+// Tema
+// =============================================
+
+function temaDegistir() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('pratikur_theme', currentTheme);
+    temaUygula();
+}
+
+function temaUygula() {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    const icon = document.getElementById('themeIcon');
+    if (icon) {
+        icon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+        meta.content = currentTheme === 'dark' ? '#1a1b23' : '#ffffff';
+    }
+    const colorScheme = document.querySelector('meta[name="color-scheme"]');
+    if (colorScheme) {
+        colorScheme.content = currentTheme === 'dark' ? 'dark' : 'light';
+    }
+}
+
+// Sayfa yuklendiginde tema tercihini hemen uygula
+temaUygula();
 
 // =============================================
 // PWA
