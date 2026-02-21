@@ -208,6 +208,9 @@ function setKaynak(kaynak) {
     // Istatistik kontrollerini guncelle
     istatistikKontrolleriniGuncelle(kaynak);
 
+    // Cevirici dropdown'larini guncelle
+    ceviriciDropdownGuncelle(kaynak);
+
     // Guncel kur ve tablo guncelle
     guncelKurlariGuncelle();
     kurListesiGuncelle();
@@ -624,6 +627,62 @@ function istatistikKontrolleriniGuncelle(kaynak) {
 
     // Istatistik sonuclarini temizle
     document.getElementById('statSonuclar').textContent = '';
+}
+
+function ceviriciDropdownGuncelle(kaynak) {
+    const fromSelect = document.getElementById('calcFrom');
+    const toSelect = document.getElementById('calcTo');
+    const disclaimer = document.getElementById('calcDisclaimer');
+
+    const oncekiFrom = fromSelect.value;
+    const oncekiTo = toSelect.value;
+
+    fromSelect.textContent = '';
+    toSelect.textContent = '';
+
+    if (kaynak === 'tcmb') {
+        // TRY secenegi ekle
+        [fromSelect, toSelect].forEach(sel => {
+            const tryOpt = document.createElement('option');
+            tryOpt.value = 'TRY';
+            tryOpt.text = 'TRY - ' + (currentLang === 'en' ? 'Turkish Lira' : 'Türk Lirası');
+            sel.appendChild(tryOpt);
+        });
+
+        // TCMB para birimlerini ekle
+        Object.entries(tcmbParaBirimleri).forEach(([code, info]) => {
+            [fromSelect, toSelect].forEach(sel => {
+                const option = document.createElement('option');
+                option.value = code;
+                const name = (currentLang === 'en') ? (info.nameEn || info.nameTr) : info.nameTr;
+                option.text = `${code} - ${name}`;
+                sel.appendChild(option);
+            });
+        });
+
+        disclaimer.textContent = t('disclaimerTcmb');
+    } else {
+        // ECB para birimlerini ekle
+        Object.entries(tumParaBirimleri).forEach(([code, name]) => {
+            [fromSelect, toSelect].forEach(sel => {
+                const option = document.createElement('option');
+                option.value = code;
+                option.text = `${code} - ${name}`;
+                sel.appendChild(option);
+            });
+        });
+
+        disclaimer.textContent = t('disclaimerEcb');
+    }
+
+    // Onceki secimleri koru, yoksa varsayilan
+    const fromMevcut = [...fromSelect.options].some(o => o.value === oncekiFrom);
+    const toMevcut = [...toSelect.options].some(o => o.value === oncekiTo);
+    fromSelect.value = fromMevcut ? oncekiFrom : 'USD';
+    toSelect.value = toMevcut ? oncekiTo : 'TRY';
+
+    // Hesaplama sonucunu sifirla
+    document.getElementById('calcResult').textContent = t('hesaplamakIcin');
 }
 
 function gecmisKurlariGetirRouter() {
