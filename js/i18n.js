@@ -98,6 +98,9 @@ const TRANSLATIONS = {
         favorilereEkle: 'Favorilere Ekle',
         favorilerdenCikar: 'Favorilerden Çıkar',
 
+        // Tema
+        temaDegistir: 'Tema Değiştir',
+
         // Footer
         gizlilikPolitikasi: 'Gizlilik Politikası',
 
@@ -222,6 +225,9 @@ const TRANSLATIONS = {
         // Favorites
         favorilereEkle: 'Add to Favorites',
         favorilerdenCikar: 'Remove from Favorites',
+
+        // Theme
+        temaDegistir: 'Toggle Theme',
 
         // Footer
         gizlilikPolitikasi: 'Privacy Policy',
