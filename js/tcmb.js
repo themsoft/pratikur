@@ -132,7 +132,6 @@ async function tcmbGecmisKurlariGetir() {
     results.sort((a, b) => b.date.localeCompare(a.date));
 
     // Tablo basligini guncelle (para birimi cifti ile)
-    const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
     const thead = document.querySelector('#historyTable thead tr');
     thead.textContent = '';
     [t('thTarih'), `${target}/TRY ${t('thAlis')}`, `${target}/TRY ${t('thSatis')}`].forEach(text => {
@@ -144,7 +143,7 @@ async function tcmbGecmisKurlariGetir() {
     results.forEach(item => {
         const tr = document.createElement('tr');
         const tdDate = document.createElement('td');
-        tdDate.textContent = new Date(item.date).toLocaleDateString(locale);
+        tdDate.textContent = formatTarih(item.date);
 
         const tdBuy = document.createElement('td');
         tdBuy.appendChild(document.createTextNode(`1 ${target} = `));

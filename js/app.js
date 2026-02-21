@@ -76,8 +76,7 @@ function kaynakBilgisiniGuncelle(kaynak, dateStr) {
     const zamanBox = document.getElementById('zamanGosterge');
     if (!zamanBox) return;
 
-    const locale = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en-US' : 'tr-TR';
-    const tarih = dateStr ? new Date(dateStr).toLocaleDateString(locale) : '';
+    const tarih = dateStr ? formatTarih(dateStr) : '';
 
     zamanBox.textContent = '';
     const icon = document.createElement('i');
@@ -480,11 +479,10 @@ function gecmisKurlariGetir() {
                 return;
             }
 
-            const locale = currentLang === 'en' ? 'en-US' : 'tr-TR';
             const dates = Object.keys(data.rates).sort().reverse();
             dates.forEach(date => {
                 const rate = data.rates[date][target];
-                const formattedDate = new Date(date).toLocaleDateString(locale);
+                const formattedDate = formatTarih(date);
 
                 const tr = document.createElement('tr');
                 const tdDate = document.createElement('td');
@@ -545,7 +543,7 @@ function gecmisExcelIndir() {
         }
         let csv = `data:text/csv;charset=utf-8,\uFEFF${t('thTarih')};${t('thAlis')};${t('thSatis')}\n`;
         sonGecmisVeri.results.forEach(item => {
-            const formattedDate = new Date(item.date).toLocaleDateString('tr-TR');
+            const formattedDate = formatTarih(item.date);
             csv += `${formattedDate};${String(item.buying.toFixed(4)).replace('.', ',')};${String(item.selling.toFixed(4)).replace('.', ',')}\n`;
         });
         csvIndir(`kur_arsivi_TCMB_${sonGecmisVeri.target}.csv`, csv);
@@ -571,7 +569,7 @@ function gecmisExcelIndir() {
     dates.forEach(date => {
         const rate = sonGecmisVeri.rates[date][target];
         if (rate !== undefined) {
-            const formattedDate = new Date(date).toLocaleDateString('tr-TR');
+            const formattedDate = formatTarih(date);
             csv += `${formattedDate};${String(rate.toFixed(4)).replace('.', ',')}\n`;
         }
     });

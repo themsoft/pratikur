@@ -320,8 +320,7 @@ function calculateAverage(flatRates) {
 }
 
 function formatDateLocale(dateStr) {
-    var locale = currentLang === 'tr' ? 'tr-TR' : 'en-US';
-    return new Date(dateStr).toLocaleDateString(locale);
+    return formatTarih(dateStr);
 }
 
 function formatMonthLabel(monthStr) {
