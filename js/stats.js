@@ -51,34 +51,41 @@ function calculatePercentageChange(sortedDates, rates) {
 
     var totalChange = ((lastValue - firstValue) / firstValue) * 100;
 
-    // Gunluk degisim (son 2 is gunu)
-    var dailyChange = null;
-    if (sortedDates.length >= 2) {
-        var prevDay = sortedDates[sortedDates.length - 2];
-        dailyChange = ((lastValue - rates[prevDay]) / rates[prevDay]) * 100;
-    }
+    // Donemi 3 esit bolume ayir
+    var segments = null;
+    var n = sortedDates.length;
+    if (n >= 6) {
+        var idx1 = Math.floor(n / 3);
+        var idx2 = Math.floor(2 * n / 3);
 
-    // Haftalik degisim (son 5 is gunu)
-    var weeklyChange = null;
-    if (sortedDates.length >= 5) {
-        var weekAgoIdx = Math.max(0, sortedDates.length - 6);
-        var weekAgoDate = sortedDates[weekAgoIdx];
-        weeklyChange = ((lastValue - rates[weekAgoDate]) / rates[weekAgoDate]) * 100;
-    }
-
-    // Aylik degisim (son 22 is gunu)
-    var monthlyChange = null;
-    if (sortedDates.length >= 22) {
-        var monthAgoIdx = Math.max(0, sortedDates.length - 23);
-        var monthAgoDate = sortedDates[monthAgoIdx];
-        monthlyChange = ((lastValue - rates[monthAgoDate]) / rates[monthAgoDate]) * 100;
+        segments = [
+            {
+                startDate: sortedDates[0],
+                endDate: sortedDates[idx1],
+                startValue: rates[sortedDates[0]],
+                endValue: rates[sortedDates[idx1]],
+                change: ((rates[sortedDates[idx1]] - rates[sortedDates[0]]) / rates[sortedDates[0]]) * 100
+            },
+            {
+                startDate: sortedDates[idx1],
+                endDate: sortedDates[idx2],
+                startValue: rates[sortedDates[idx1]],
+                endValue: rates[sortedDates[idx2]],
+                change: ((rates[sortedDates[idx2]] - rates[sortedDates[idx1]]) / rates[sortedDates[idx1]]) * 100
+            },
+            {
+                startDate: sortedDates[idx2],
+                endDate: sortedDates[n - 1],
+                startValue: rates[sortedDates[idx2]],
+                endValue: rates[sortedDates[n - 1]],
+                change: ((rates[sortedDates[n - 1]] - rates[sortedDates[idx2]]) / rates[sortedDates[idx2]]) * 100
+            }
+        ];
     }
 
     return {
         total: totalChange,
-        daily: dailyChange,
-        weekly: weeklyChange,
-        monthly: monthlyChange,
+        segments: segments,
         firstValue: firstValue,
         lastValue: lastValue,
         firstDate: firstDate,
@@ -221,38 +228,32 @@ function renderStats(rates, base, target) {
     minMaxCard.appendChild(highlight);
     container.appendChild(minMaxCard);
 
-    // 3. Degisim Oranlari
-    if (changes) {
+    // 3. Donem Analizi
+    if (changes && changes.segments) {
         var changeCard = document.createElement('div');
         changeCard.className = 'stat-card';
 
         var changeTitle = document.createElement('div');
         changeTitle.className = 'stat-card-title';
-        changeTitle.textContent = t('degisimOranlari');
+        changeTitle.textContent = t('donemAnalizi');
         changeCard.appendChild(changeTitle);
 
         var changeGrid = document.createElement('div');
         changeGrid.className = 'stat-change-grid';
 
-        var changeItems = [
-            { label: t('gunlukDegisim'), value: changes.daily },
-            { label: t('haftalikDegisim'), value: changes.weekly },
-            { label: t('aylikDegisim'), value: changes.monthly }
-        ];
-
-        changeItems.forEach(function(item) {
+        changes.segments.forEach(function(seg) {
             var el = document.createElement('div');
             el.className = 'stat-change-item';
 
             var lbl = document.createElement('span');
             lbl.className = 'stat-change-label';
-            lbl.textContent = item.label;
+            lbl.textContent = formatDateLocale(seg.startDate) + ' \u2192 ' + formatDateLocale(seg.endDate);
             el.appendChild(lbl);
 
-            var fc = formatChange(item.value);
+            var fc = formatChange(seg.change);
             var val = document.createElement('span');
             val.className = 'stat-change-value ' + fc.cls;
-            val.textContent = formatTrendIcon(item.value) + ' ' + fc.text;
+            val.textContent = formatTrendIcon(seg.change) + ' ' + fc.text;
             el.appendChild(val);
 
             changeGrid.appendChild(el);
