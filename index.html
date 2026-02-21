@@ -46,6 +46,12 @@
         <!-- Güncel Kur -->
         <div class="current-rate-container">
             <div class="current-rate-header" data-i18n="guncelKur">Güncel Kur</div>
+            <div class="source-toggle-container">
+                <div class="direction-toggle direction-toggle--compact">
+                    <button class="direction-btn active" id="btnEcb" onclick="setKaynak('ecb')">ECB</button>
+                    <button class="direction-btn" id="btnTcmb" onclick="setKaynak('tcmb')">TCMB</button>
+                </div>
+            </div>
             <div class="current-rate-row">
                 <div class="current-rate-item">
                     <span class="current-rate-label">USD/TRY</span>
@@ -57,7 +63,7 @@
                     <span class="current-rate-value" id="guncelEur">--</span>
                 </div>
             </div>
-            <div class="current-rate-source" id="guncelKurKaynak" data-i18n="ecbKaynak">Avrupa Merkez Bankası - Günlük Kapanış</div>
+            <div id="zamanGosterge" class="zaman-bilgisi"></div>
         </div>
 
         <!-- Tabs -->
@@ -70,16 +76,7 @@
 
         <!-- Tab 1: Kur Listesi -->
         <div id="tab1" class="content active">
-            <div id="zamanGosterge" class="zaman-bilgisi"></div>
-
-            <div class="kontrol-paneli">
-                <div class="direction-toggle">
-                    <button class="direction-btn active" id="btnEcb" onclick="setKaynak('ecb')">ECB</button>
-                    <button class="direction-btn" id="btnTcmb" onclick="setKaynak('tcmb')">TCMB</button>
-                </div>
-            </div>
-
-            <div id="ecbKontroller">
+            <div id="paraKontroller">
                 <label class="currency-label" data-i18n="paraBirimi">Para Birimi:</label>
                 <select id="baseCurrencySelect" onchange="tabloyuGuncelle()">
                     <option value="TRY" selected>TRY - Türk Lirası</option>

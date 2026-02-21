@@ -42,10 +42,40 @@ function uygulamayiYukle() {
 // Güncel Kur
 // =============================================
 
+function kaynakBilgisiniGuncelle(kaynak, dateStr) {
+    const zamanBox = document.getElementById('zamanGosterge');
+    if (!zamanBox) return;
+
+    const locale = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en-US' : 'tr-TR';
+    const tarih = dateStr ? new Date(dateStr).toLocaleDateString(locale) : '';
+
+    zamanBox.textContent = '';
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-info-circle';
+    zamanBox.appendChild(icon);
+
+    if (kaynak === 'ecb') {
+        zamanBox.appendChild(document.createTextNode(' ' + t('ecbKuru') + ' '));
+        const bold = document.createElement('b');
+        bold.textContent = t('ecbKapanis');
+        zamanBox.appendChild(bold);
+    } else {
+        zamanBox.appendChild(document.createTextNode(' ' + t('tcmbKuru') + ' '));
+        const bold = document.createElement('b');
+        bold.textContent = t('tcmbAlisSatis');
+        zamanBox.appendChild(bold);
+    }
+
+    if (tarih) {
+        zamanBox.appendChild(document.createTextNode(' - ' + tarih));
+    }
+}
+
 function guncelKurlariGoster() {
     fetchWithRetry('https://api.frankfurter.dev/v1/latest?base=USD&symbols=TRY')
         .then(data => {
             document.getElementById('guncelUsd').textContent = data.rates.TRY.toFixed(4);
+            kaynakBilgisiniGuncelle('ecb', data.date);
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
@@ -115,9 +145,6 @@ function setKaynak(kaynak) {
     document.getElementById('btnEcb').classList.toggle('active', kaynak === 'ecb');
     document.getElementById('btnTcmb').classList.toggle('active', kaynak === 'tcmb');
 
-    // ECB kontrolleri (para birimi secici) goster/gizle
-    document.getElementById('ecbKontroller').classList.toggle('hidden', kaynak === 'tcmb');
-
     // Tablo basligini guncelle
     const thead = document.querySelector('#kurTablosu thead tr');
     thead.textContent = '';
@@ -147,7 +174,6 @@ function guncelKurlariGuncelle() {
         tcmbGuncelKurlariGoster();
     } else {
         guncelKurlariGoster();
-        document.getElementById('guncelKurKaynak').textContent = t('ecbKaynak');
     }
 }
 
@@ -170,7 +196,6 @@ function tabloyuGuncelle() {
     const base = document.getElementById('baseCurrencySelect').value;
     const tbody = document.getElementById('kurListesiBody');
     const baslik = document.getElementById('tabloBaslikDeger');
-    const zamanBox = document.getElementById('zamanGosterge');
 
     baslik.innerText = currentDirection === 'duz'
         ? `1 ${base} Karsiligi`
@@ -189,17 +214,6 @@ function tabloyuGuncelle() {
         .then(data => {
             sonGelenVeri = data;
             tbody.textContent = '';
-
-            const tarih = new Date(data.date).toLocaleDateString('tr-TR');
-            zamanBox.textContent = '';
-            const icon = document.createElement('i');
-            icon.className = 'fas fa-info-circle';
-            zamanBox.appendChild(icon);
-            zamanBox.appendChild(document.createTextNode(' ' + t('ecbKuru') + ' '));
-            const bold = document.createElement('b');
-            bold.textContent = t('ecbKapanis');
-            zamanBox.appendChild(bold);
-            zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
 
             Object.entries(data.rates).forEach(([kod, oran]) => {
                 const deger = currentDirection === 'duz' ? oran : (1 / oran);

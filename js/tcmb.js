@@ -43,8 +43,7 @@ function tcmbGuncelKurlariGoster() {
             if (data.rates.EUR) {
                 document.getElementById('guncelEur').textContent = data.rates.EUR.selling.toFixed(4);
             }
-            const tarihStr = data.date ? new Date(data.date).toLocaleDateString(currentLang === 'tr' ? 'tr-TR' : 'en-US') : '';
-            document.getElementById('guncelKurKaynak').textContent = t('tcmbKuru') + (tarihStr ? ' - ' + tarihStr : '');
+            kaynakBilgisiniGuncelle('tcmb', data.date);
         })
         .catch(() => {
             document.getElementById('guncelUsd').textContent = '--';
@@ -154,7 +153,6 @@ async function tcmbGecmisKurlariGetir() {
 function tcmbTablosuGuncelle() {
     const tbody = document.getElementById('kurListesiBody');
     const baslik = document.getElementById('tabloBaslikDeger');
-    const zamanBox = document.getElementById('zamanGosterge');
 
     baslik.innerText = currentDirection === 'duz'
         ? '1 TRY Karsiligi'
@@ -172,19 +170,6 @@ function tcmbTablosuGuncelle() {
     tcmbKurlariGetir()
         .then(data => {
             tbody.textContent = '';
-
-            if (data.date) {
-                const tarih = new Date(data.date).toLocaleDateString('tr-TR');
-                zamanBox.textContent = '';
-                const icon = document.createElement('i');
-                icon.className = 'fas fa-info-circle';
-                zamanBox.appendChild(icon);
-                zamanBox.appendChild(document.createTextNode(' ' + t('tcmbKuru') + ' '));
-                const bold = document.createElement('b');
-                bold.textContent = t('tcmbAlisSatis');
-                zamanBox.appendChild(bold);
-                zamanBox.appendChild(document.createTextNode(` - ${tarih}`));
-            }
 
             Object.entries(data.rates).forEach(([kod, info]) => {
                 const tr = document.createElement('tr');
