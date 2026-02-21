@@ -237,8 +237,8 @@ function tabloyuGuncelle() {
     const baslik = document.getElementById('tabloBaslikDeger');
 
     baslik.innerText = currentDirection === 'duz'
-        ? `1 ${base} Karsiligi`
-        : `1 Birimin ${base} Karsiligi`;
+        ? `1 ${base} ${t('karsiligi')}`
+        : `1 ${t('biriminKarsiligi')} ${base} ${t('karsiligi')}`;
 
     tbody.textContent = '';
     const loadingRow = document.createElement('tr');
@@ -467,7 +467,7 @@ function gecmisKurlariGetir() {
 function excelIndir() {
     if (!sonGelenVeri) return;
 
-    let csv = 'data:text/csv;charset=utf-8,\uFEFFPara Birimi;De\u011fer\n';
+    let csv = `data:text/csv;charset=utf-8,\uFEFF${t('thParaBirimi')};${t('thDeger')}\n`;
     Object.entries(sonGelenVeri.rates).forEach(([k, v]) => {
         const val = currentDirection === 'duz' ? v : (1 / v);
         csv += `${k};${String(val.toFixed(4)).replace('.', ',')}\n`;
@@ -488,7 +488,7 @@ function gecmisExcelIndir() {
             alert(t('indirilecekVeriYok'));
             return;
         }
-        let csv = `data:text/csv;charset=utf-8,\uFEFFTarih;Alis;Satis\n`;
+        let csv = `data:text/csv;charset=utf-8,\uFEFF${t('thTarih')};${t('thAlis')};${t('thSatis')}\n`;
         sonGecmisVeri.results.forEach(item => {
             const formattedDate = new Date(item.date).toLocaleDateString('tr-TR');
             csv += `${formattedDate};${String(item.buying.toFixed(4)).replace('.', ',')};${String(item.selling.toFixed(4)).replace('.', ',')}\n`;
@@ -512,7 +512,7 @@ function gecmisExcelIndir() {
     const base = sonGecmisVeri.base || document.getElementById('histBase').value;
     const target = Object.keys(sonGecmisVeri.rates[dates[0]])[0];
 
-    let csv = `data:text/csv;charset=utf-8,\uFEFF Tarih;1 ${base} Karsiligi (${target})\n`;
+    let csv = `data:text/csv;charset=utf-8,\uFEFF${t('thTarih')};1 ${base} ${t('karsiligi')} (${target})\n`;
     dates.forEach(date => {
         const rate = sonGecmisVeri.rates[date][target];
         if (rate !== undefined) {
