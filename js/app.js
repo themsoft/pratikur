@@ -270,6 +270,14 @@ function tabloyuGuncelle() {
                 const tr = document.createElement('tr');
 
                 const tdName = document.createElement('td');
+
+                // Favori yildiz ikonu
+                const star = document.createElement('i');
+                star.className = favoriler.includes(kod) ? 'fas fa-star favori-yildiz aktif' : 'far fa-star favori-yildiz';
+                star.title = favoriler.includes(kod) ? t('favorilerdenCikar') : t('favorilereEkle');
+                star.onclick = (e) => { e.stopPropagation(); toggleFavori(kod); };
+                tdName.appendChild(star);
+
                 const kodBold = document.createElement('b');
                 kodBold.textContent = kod;
                 tdName.appendChild(kodBold);
