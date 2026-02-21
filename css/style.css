@@ -98,15 +98,6 @@ body {
     text-align: center;
 }
 
-.current-rate-header {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #666;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
 .current-rate-row {
     display: flex;
     justify-content: space-around;
@@ -150,10 +141,70 @@ body {
 }
 
 .current-rate-container .zaman-bilgisi {
-    margin-top: 10px;
+    margin-top: 8px;
     margin-bottom: 0;
-    border-radius: 6px;
-    font-size: 0.78em;
+    font-size: 0.72em;
+}
+
+/* === Favori Para Birimleri === */
+.favori-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+.favori-card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.8em;
+}
+
+.favori-card-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.favori-card-value {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.favori-sil-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 0 2px;
+    line-height: 1;
+}
+
+.favori-sil-btn:hover {
+    color: #dc2626;
+}
+
+.favori-yildiz {
+    cursor: pointer;
+    color: #ccc;
+    margin-right: 4px;
+    font-size: 0.9em;
+}
+
+.favori-yildiz.aktif {
+    color: #f59e0b;
+}
+
+.favori-yildiz:hover {
+    color: #f59e0b;
 }
 
 .zaman-bilgisi:empty {
@@ -395,13 +446,13 @@ tbody tr:nth-child(even) {
 .zaman-bilgisi {
     text-align: center;
     margin-bottom: 15px;
-    font-size: 0.85em;
-    color: #856404;
-    background: #fff3cd;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ffeeba;
-    font-weight: 500;
+    font-size: 0.75em;
+    color: #999;
+    background: transparent;
+    padding: 4px 10px;
+    border-radius: 0;
+    border: none;
+    font-weight: 400;
 }
 
 /* === Çevirici (Swap & History) === */
