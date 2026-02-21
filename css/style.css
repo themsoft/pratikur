@@ -98,13 +98,15 @@ body {
     color: var(--text-primary);
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
     max-width: 700px;
     margin: 0 auto;
     background: var(--bg-container);
-    border-radius: 12px;
+    border-radius: 16px;
     box-shadow: var(--shadow-card);
     overflow: hidden;
     position: relative;
@@ -122,7 +124,7 @@ body {
 }
 
 .app-brand {
-    font-size: 1.1em;
+    font-size: 1.25em;
     font-weight: 700;
     color: var(--text-brand);
     letter-spacing: -0.5px;
@@ -207,10 +209,11 @@ body {
 }
 
 .current-rate-value {
-    font-size: 1.3em;
+    font-size: 1.5em;
     font-weight: bold;
     color: var(--text-brand);
     display: block;
+    letter-spacing: -0.5px;
 }
 
 .current-rate-divider {
@@ -310,14 +313,15 @@ body {
 
 .tab-btn {
     flex: 1;
-    padding: 15px;
+    padding: 14px 8px;
     border: none;
     background: transparent;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     color: var(--text-muted);
-    transition: 0.3s;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+    border-bottom: 3px solid transparent;
 }
 
 .tab-btn:hover {
@@ -327,7 +331,7 @@ body {
 
 .tab-btn.active {
     color: var(--accent-blue);
-    border-bottom: 3px solid var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
     background: var(--bg-tab-active);
 }
 
@@ -366,24 +370,48 @@ input[type="number"] {
     box-sizing: border-box;
     background: var(--bg-input);
     color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:hover,
+input[type="number"]:hover {
+    border-color: var(--accent-blue);
+}
+
+select:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
 input[type="date"] {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--border-medium);
-    border-radius: 6px;
+    border-radius: 8px;
     font-family: inherit;
     box-sizing: border-box;
     background: var(--bg-input);
     color: var(--text-primary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="date"]:hover {
+    border-color: var(--accent-blue);
+}
+
+input[type="date"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
 }
 
 /* === Kontrol Paneli === */
 .kontrol-paneli {
     background: var(--bg-panel);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin: 15px 0;
     border: 1px solid var(--border-panel);
 }
@@ -432,11 +460,27 @@ input[type="date"] {
     cursor: pointer;
     font-size: 15px;
     margin-top: 10px;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.btn:active {
+    transform: translateY(0) !important;
 }
 
 .btn-green {
     background-color: var(--accent-green);
     color: white;
+}
+
+.btn-green:hover {
+    background-color: #1e8e3e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+[data-theme="dark"] .btn-green:hover {
+    background-color: #1a9f40;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
 }
 
 .btn-csv {
@@ -499,6 +543,14 @@ td {
 
 tbody tr:nth-child(even) {
     background: var(--bg-table-even);
+}
+
+tbody tr {
+    transition: background-color 0.15s;
+}
+
+tbody tr:hover {
+    background: var(--bg-tab-active);
 }
 
 /* === Sonuç & Bilgi Kutuları === */
@@ -630,7 +682,7 @@ tbody tr:nth-child(even) {
 .history-controls {
     background: var(--bg-panel);
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-panel);
     margin-bottom: 20px;
 }
