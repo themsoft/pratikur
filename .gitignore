@@ -1,8 +1,30 @@
-*.zip
-*.log
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out/
+
+# OS files
 .DS_Store
 Thumbs.db
-CLAUDE.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Archives & logs
+*.zip
+*.log
 
 # Local Netlify folder
 .netlify
+
+# Internal docs
+CLAUDE.md
